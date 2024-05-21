@@ -43,6 +43,7 @@
     "eslint-plugin-vue": "^9.26.0",
     "husky": "^9.0.11",
     "js-base64": "^3.7.7",
+    "less": "^4.2.0",
     "lint-staged": "^15.2.2",
     "prettier": "^3.1.0",
     "swagger-typescript-api": "^13.0.3",
