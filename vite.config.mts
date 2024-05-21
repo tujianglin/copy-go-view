@@ -50,7 +50,9 @@ export default defineConfig(({ mode }) => {
     },
     css: {
       preprocessorOptions: {
-        scss: {},
+        less: {
+          javascriptEnabled: true,
+        },
       },
     },
     plugins: createVitePlugins(),

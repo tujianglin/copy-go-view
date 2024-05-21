@@ -19,7 +19,7 @@
     "*.env": "$(capture).env.*",
     "CHANGELOG.md": "CHANGELOG*",
     "package.json": "pnpm-lock.yaml,pnpm-workspace.yaml,LICENSE,.gitattributes,.gitignore,.gitpod.yml,CNAME,README*,.npmrc,.browserslistrc",
-    ".eslintrc.mjs": ".eslintignore,.prettierignore,,.commitlintrc.cjs,.prettierrc.cjs"
+    ".eslintrc.cjs": ".eslintignore,.prettierignore,,.commitlintrc.cjs,.prettierrc.cjs"
   },
   "terminal.integrated.scrollback": 10000,
   "liveServer.settings.port": 5501
