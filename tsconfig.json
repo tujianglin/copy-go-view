@@ -11,6 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": false,
     "jsx": "preserve",
+    "jsxImportSource": "vue",
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
