@@ -9,6 +9,7 @@
     setup() {
       const { getAntdLocale } = useLocale();
       const { theme } = useAppStore();
+      const a = '';
       return () => (
         <ConfigProvider locale={getAntdLocale.value} theme={theme}>
           <App class="h-full">
