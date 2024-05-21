@@ -1,0 +1,8 @@
+node_modules
+*.md
+.vscode
+dist
+/public
+.husky
+src/api/*
+generate.ts
