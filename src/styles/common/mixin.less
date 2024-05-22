@@ -1,0 +1,9 @@
+@import './index.less';
+
+.wm(@block, @content) {
+  @B: ~'@{namespace}-@{block}';
+  .@{B} {
+    // 使用 Less 的 Mixin 内容插入
+    @content();
+  }
+}

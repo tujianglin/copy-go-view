@@ -52,6 +52,7 @@ export default defineConfig(({ mode }) => {
       preprocessorOptions: {
         less: {
           javascriptEnabled: true,
+          additionalData: '@import "/@/styles/common/index.less";',
         },
       },
     },

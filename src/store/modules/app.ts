@@ -4,16 +4,17 @@ import { defaultSetting } from '/@/settings/designSetting';
 import { AppConfig } from '/#/storage';
 import { store } from '/@/store';
 import { reactive, ref, watch } from 'vue';
-import { theme as antdTheme } from 'ant-design-vue/es';
+import { theme as antdTheme } from 'ant-design-vue';
 import { Storage } from '/@/utils/storage';
 import { StorageEnum } from '/@/enums/storageEnum';
 
 export const useAppStore = defineStore('app', () => {
+  const { darkAlgorithm, compactAlgorithm } = antdTheme;
+
   const appConfig = reactive<AppConfig>(Storage.getLocal(StorageEnum.APP_CONFIG) || defaultSetting);
   const themeConfig = reactive<ThemeConfig>({
-    algorithm: antdTheme.defaultAlgorithm,
+    algorithm: [darkAlgorithm, compactAlgorithm],
     token: {
-      colorBgContainer: '#fff',
       colorPrimary: appConfig.colorPrimary,
     },
   });

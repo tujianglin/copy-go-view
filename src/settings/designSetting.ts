@@ -1,5 +1,7 @@
 import { ThemeConfig } from 'ant-design-vue/es/config-provider/context';
 import { AppConfig } from '/#/storage';
+import { PreviewScaleEnum } from '/@/enums/styleEnum';
+import { RequestHttpIntervalEnum } from '/@/enums/httpEnum';
 
 export const defaultSetting: AppConfig = {
   /* 主题色 */
@@ -20,3 +22,12 @@ export const defThemeToken: ThemeConfig['token'] = {
   colorPrimary,
   borderRadius: 2,
 };
+
+// 预览展示方式
+export const previewScaleType = PreviewScaleEnum.FIT;
+
+// 数据请求间隔
+export const requestInterval = 30;
+
+// 数据请求间隔单位
+export const requestIntervalUnit = RequestHttpIntervalEnum.SECOND;
