@@ -1,24 +1,4 @@
 import { RequestDataTypeEnum, RequestHttpEnum, RequestContentTypeEnum } from '/@/enums/httpEnum';
-import { FilterEnum } from '/#/components';
-
-// 坐标轴信息
-// eslint-disable-next-line no-redeclare
-export enum EditCanvasTypeEnum {
-  EDIT_LAYOUT_DOM = 'editLayoutDom',
-  EDIT_CONTENT_DOM = 'editContentDom',
-  OFFSET = 'offset',
-  SCALE = 'scale',
-  USER_SCALE = 'userScale',
-  LOCK_SCALE = 'lockScale',
-  IS_CREATE = 'isCreate',
-  IS_DRAG = 'isDrag',
-  IS_SELECT = 'isSelect',
-  IS_CODE_EDIT = 'isCodeEdit',
-  START_X = 'startX',
-  START_Y = 'startY',
-  X = 'x',
-  Y = 'y',
-}
 
 // 滤镜/背景色/宽高主题等
 export enum EditCanvasConfigEnum {
@@ -33,106 +13,81 @@ export enum EditCanvasConfigEnum {
   SELECT_COLOR = 'selectColor',
   PREVIEW_SCALE_TYPE = 'previewScaleType',
 }
-// Store 枚举
-export enum EditStoreEnum {
-  EDIT_RANGE = 'editRange',
-  EDIT_CANVAS = 'editCanvas',
-  RIGHT_MENU_SHOW = 'rightMenuShow',
-  MOUSE_POSITION = 'mousePosition',
-  TARGET_CHART = 'targetChart',
-  RECORD_CHART = 'recordChart',
-  // 以下需要存储
-  EDIT_CANVAS_CONFIG = 'editCanvasConfig',
-  REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
-  COMPONENT_LIST = 'componentList',
-}
 
-// Store 枚举
-export enum EditStoreEnum {
-  EDIT_RANGE = 'editRange',
-  EDIT_CANVAS = 'editCanvas',
-  RIGHT_MENU_SHOW = 'rightMenuShow',
-  MOUSE_POSITION = 'mousePosition',
-  TARGET_CHART = 'targetChart',
-  RECORD_CHART = 'recordChart',
-  // 以下需要存储
-  EDIT_CANVAS_CONFIG = 'editCanvasConfig',
-  REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
-  COMPONENT_LIST = 'componentList',
-}
 export interface EditCanvasConfigType {
   // 滤镜-启用
-  [FilterEnum.FILTERS_SHOW]: boolean;
+  filterShow: boolean;
   // 滤镜-色相
-  [FilterEnum.HUE_ROTATE]: number;
+  hueRotate: number;
   // 滤镜-饱和度
-  [FilterEnum.SATURATE]: number;
+  saturate: number;
   // 滤镜-亮度
-  [FilterEnum.BRIGHTNESS]: number;
+  brightness: number;
   // 滤镜-对比度
-  [FilterEnum.CONTRAST]: number;
+  contrast: number;
   // 滤镜-不透明度
-  [FilterEnum.OPACITY]: number;
+  opacity: number;
   // 变换（暂不使用）
-  [FilterEnum.ROTATE_Z]: number;
-  [FilterEnum.ROTATE_X]: number;
-  [FilterEnum.ROTATE_Y]: number;
-  [FilterEnum.SKEW_X]: number;
-  [FilterEnum.SKEW_Y]: number;
-  [FilterEnum.BLEND_MODE]: string;
+  rotateZ: number;
+  rotateX: number;
+  rotateY: number;
+  skewX: number;
+  skewY: number;
+  blendMode: string;
+  // ----- 滤镜/背景色/宽高主题等
   // 大屏名称
-  [EditCanvasConfigEnum.PROJECT_NAME]?: string;
+  projectName?: string;
   // 大屏宽度
-  [EditCanvasConfigEnum.WIDTH]: number;
+  width: number;
   // 大屏高度
-  [EditCanvasConfigEnum.HEIGHT]: number;
+  height: number;
   // 背景色
-  [EditCanvasConfigEnum.BACKGROUND]?: string;
+  background?: string;
   // 背景图片
-  [EditCanvasConfigEnum.BACKGROUND_IMAGE]?: string | null;
+  backgroundImage?: string | null;
   // 图表主题颜色
-  [EditCanvasConfigEnum.CHART_THEME_COLOR]: ChartColorsNameType;
+  chartThemeColor: ChartColorsNameType;
   // 自定义图表主题颜色
-  [EditCanvasConfigEnum.CHART_CUSTOM_THEME_COLOR_INFO]?: CustomColorsType[];
+  chartCustomThemeColorInfo?: CustomColorsType[];
   // 图表全局配置
-  [EditCanvasConfigEnum.CHART_THEME_SETTING]: GlobalThemeJsonType;
+  chartThemeSetting: GlobalThemeJsonType;
   // 图表主题颜色
-  [EditCanvasConfigEnum.SELECT_COLOR]: boolean;
+  selectColor: boolean;
   // 预览展示方式
-  [EditCanvasConfigEnum.PREVIEW_SCALE_TYPE]: PreviewScaleEnum;
+  previewScaleType: PreviewScaleEnum;
 }
 // 编辑区域
 export type EditCanvasType = {
   // 编辑区域 DOM
-  [EditCanvasTypeEnum.EDIT_LAYOUT_DOM]: HTMLElement | null;
-  [EditCanvasTypeEnum.EDIT_CONTENT_DOM]: HTMLElement | null;
+  editLayoutDom: HTMLElement | null;
+  editContentDom: HTMLElement | null;
   // 偏移大小
-  [EditCanvasTypeEnum.OFFSET]: number;
+  offset: number;
   // 缩放
-  [EditCanvasTypeEnum.SCALE]: number;
+  scale: number;
   // 缩放
-  [EditCanvasTypeEnum.USER_SCALE]: number;
+  userScale: number;
   // 锁定缩放
-  [EditCanvasTypeEnum.LOCK_SCALE]: boolean;
+  lockScale: boolean;
   // 初始化创建
-  [EditCanvasTypeEnum.IS_CREATE]: boolean;
+  isCreate: boolean;
   // 拖拽中
-  [EditCanvasTypeEnum.IS_DRAG]: boolean;
+  isDrag: boolean;
   // 框选中
-  [EditCanvasTypeEnum.IS_SELECT]: boolean;
+  isSelect: boolean;
   // 代码编辑中
-  [EditCanvasTypeEnum.IS_CODE_EDIT]: boolean;
+  isCodeEdit: boolean;
 };
 // 鼠标位置
 export type MousePositionType = {
   // 开始 X
-  [EditCanvasTypeEnum.START_X]: number;
+  startX: number;
   // 开始 Y
-  [EditCanvasTypeEnum.START_Y]: number;
+  startY: number;
   // X
-  [EditCanvasTypeEnum.X]: number;
+  x: number;
   // y
-  [EditCanvasTypeEnum.Y]: number;
+  y: number;
 };
 // 操作目标
 export type TargetChartType = {
@@ -189,19 +144,19 @@ export interface RequestConfigType extends RequestPublicConfigType {
 }
 // Store 类型
 export interface EditStoreType {
-  [EditStoreEnum.EDIT_CANVAS]: EditCanvasType;
-  [EditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType;
-  [EditStoreEnum.RIGHT_MENU_SHOW]: boolean;
-  [EditStoreEnum.MOUSE_POSITION]: MousePositionType;
-  [EditStoreEnum.TARGET_CHART]: TargetChartType;
-  [EditStoreEnum.RECORD_CHART]?: RecordChartType;
-  [EditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType;
-  [EditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>;
+  editCanvas: EditCanvasType;
+  editCanvasConfig: EditCanvasConfigType;
+  rightMenuShow: boolean;
+  mousePosition: MousePositionType;
+  targetChart: TargetChartType;
+  recordChart?: RecordChartType;
+  requestGlobalConfig: RequestGlobalConfigType;
+  componentList: Array<CreateComponentType | CreateComponentGroupType>;
 }
 
 // 存储数据类型
 export interface EditStorage {
-  [EditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType;
-  [EditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType;
-  [EditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>;
+  editCanvasConfig: EditCanvasConfigType;
+  requestGlobalConfig: RequestGlobalConfigType;
+  componentList: Array<CreateComponentType | CreateComponentGroupType>;
 }

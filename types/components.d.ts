@@ -1,31 +1,5 @@
 import { RequestConfigType } from '/@/store/types';
 import { GlobalThemeJsonType } from '/@/settings/chartSetting';
-import { InteractEvents } from '/@/enums/eventEnum';
-
-// 滤镜/变换枚举
-export enum FilterEnum {
-  // 是否启用
-  FILTERS_SHOW = 'filterShow',
-  // 透明度
-  OPACITY = 'opacity',
-  // 饱和度
-  SATURATE = 'saturate',
-  // 对比度
-  CONTRAST = 'contrast',
-  // 色相
-  HUE_ROTATE = 'hueRotate',
-  // 亮度
-  BRIGHTNESS = 'brightness',
-  // 旋转
-  ROTATE_Z = 'rotateZ',
-  ROTATE_X = 'rotateX',
-  ROTATE_Y = 'rotateY',
-  // 倾斜
-  SKEW_X = 'skewX',
-  SKEW_Y = 'skewY',
-  // 混合模式
-  BLEND_MODE = 'blendMode',
-}
 
 // 包分类枚举
 export enum PackagesCategoryEnum {
@@ -49,12 +23,12 @@ export enum PackagesCategoryName {
 
 // 图表包类型
 export type PackagesType = {
-  [PackagesCategoryEnum.CHARTS]: ConfigType[];
-  [PackagesCategoryEnum.INFORMATIONS]: ConfigType[];
-  [PackagesCategoryEnum.TABLES]: ConfigType[];
-  [PackagesCategoryEnum.PHOTOS]: ConfigType[];
-  [PackagesCategoryEnum.ICONS]: ConfigType[];
-  [PackagesCategoryEnum.DECORATES]: ConfigType[];
+  Charts: ConfigType[];
+  Tables: ConfigType[];
+  Informations: ConfigType[];
+  Photos: ConfigType[];
+  Icons: ConfigType[];
+  Decorates: ConfigType[];
 };
 
 // 组件实例类
@@ -63,18 +37,25 @@ export interface PublicConfigType {
   isGroup: boolean;
   attr: { x: number; y: number; w: number; h: number; zIndex: number; offsetX: number; offsetY: number };
   styles: {
-    [FilterEnum.FILTERS_SHOW]: boolean;
-    [FilterEnum.OPACITY]: number;
-    [FilterEnum.SATURATE]: number;
-    [FilterEnum.CONTRAST]: number;
-    [FilterEnum.HUE_ROTATE]: number;
-    [FilterEnum.BRIGHTNESS]: number;
-    [FilterEnum.ROTATE_Z]: number;
-    [FilterEnum.ROTATE_X]: number;
-    [FilterEnum.ROTATE_Y]: number;
-    [FilterEnum.SKEW_X]: number;
-    [FilterEnum.SKEW_Y]: number;
-    [FilterEnum.BLEND_MODE]: string;
+    // 滤镜-启用
+    filterShow: boolean;
+    // 滤镜-色相
+    hueRotate: number;
+    // 滤镜-饱和度
+    saturate: number;
+    // 滤镜-亮度
+    brightness: number;
+    // 滤镜-对比度
+    contrast: number;
+    // 滤镜-不透明度
+    opacity: number;
+    // 变换（暂不使用）
+    rotateZ: number;
+    rotateX: number;
+    rotateY: number;
+    skewX: number;
+    skewY: number;
+    blendMode: string;
     // 动画
     animations: string[];
   };
@@ -93,9 +74,9 @@ export interface PublicConfigType {
       [K in EventLife]?: string;
     };
     interactEvents: {
-      [InteractEvents.INTERACT_ON]: InteractEventOn | undefined;
-      [InteractEvents.INTERACT_COMPONENT_ID]: string | undefined;
-      [InteractEvents.INTERACT_FN]: { [name: string]: string };
+      interactOn: InteractEventOn | undefined;
+      interactComponentId: string | undefined;
+      interactFn: { [name: string]: string };
     }[];
   };
 }

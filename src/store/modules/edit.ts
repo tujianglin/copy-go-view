@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-import { EditStoreType, EditCanvasConfigType, EditStoreEnum, EditCanvasTypeEnum } from '../types';
+import { EditStoreType, EditCanvasConfigType } from '../types';
 import { defaultTheme, globalThemeJson } from '/@/settings/chartSetting';
 import { previewScaleType, requestInterval, requestIntervalUnit } from '/@/settings/designSetting';
 
@@ -113,9 +113,7 @@ export const useEditStore = defineStore('edit', () => {
   }
   // * 计算缩放
   function computedScale() {
-    console.log(state[EditStoreEnum.EDIT_CANVAS][EditCanvasTypeEnum.EDIT_LAYOUT_DOM]);
-
-    if (state[EditStoreEnum.EDIT_CANVAS][EditCanvasTypeEnum.EDIT_LAYOUT_DOM]) {
+    if (state.editCanvas.editLayoutDom) {
       // // 现有展示区域
       // const width = state.editLayoutDom.clientWidth - state.offset * 2 - 5;
       // const height = state.editLayoutDom.clientHeight - state.offset * 4;
@@ -135,7 +133,7 @@ export const useEditStore = defineStore('edit', () => {
       //   state.setScale(scaleHeight > 1 ? 1 : scaleHeight);
       // }
     } else {
-      window['$message'].warning('请先创建画布，再进行缩放');
+      // window['$message'].warning('请先创建画布，再进行缩放');
     }
   }
   return {

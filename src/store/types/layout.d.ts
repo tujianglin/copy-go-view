@@ -19,17 +19,17 @@ export enum LayoutStoreEnum {
 }
 export interface LayoutStoreType {
   // 图层控制
-  [LayoutStoreEnum.LAYERS]: boolean;
+  layers: boolean;
   // 图表组件
-  [LayoutStoreEnum.CHARTS]: boolean;
+  charts: boolean;
   // 详情设置
-  [LayoutStoreEnum.DETAILS]: boolean;
+  details: boolean;
   // 组件展示方式
-  [LayoutStoreEnum.Chart_TYPE]: ChartModeEnum;
+  chartType: ChartModeEnum;
   // 层级展示方式
-  [LayoutStoreEnum.LAYER_TYPE]: LayerModeEnum;
+  layerType: LayerModeEnum;
   // 当前正在加载的数量
-  [LayoutStoreEnum.PERCENTAGE]: number;
+  percentage: number;
   // 是否重置当前画布位置
-  [LayoutStoreEnum.RE_POSITION_CANVAS]: boolean;
+  rePositionCanvas: boolean;
 }
