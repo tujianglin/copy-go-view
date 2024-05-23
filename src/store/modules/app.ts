@@ -7,6 +7,7 @@ import { reactive, ref, watch, CSSProperties } from 'vue';
 import { theme as antdTheme } from 'ant-design-vue';
 import { Storage } from '/@/utils/storage';
 import { StorageEnum } from '/@/enums/storageEnum';
+import { GlobalToken } from 'ant-design-vue/es/theme';
 
 export const useAppStore = defineStore('app', () => {
   const { darkAlgorithm, compactAlgorithm } = antdTheme;
@@ -61,7 +62,7 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
-  function setAppStyle(val) {
+  function setAppStyle(val: GlobalToken) {
     const style = `
       --color-primary: ${val.colorPrimary};
       --color-primary-bg: ${val.colorPrimaryBg};
@@ -70,6 +71,14 @@ export const useAppStore = defineStore('app', () => {
       --color-error: ${val.colorError};
       --color-warning: ${val.colorWarning};
       --color-text-disabled: ${val.colorTextDisabled};
+      --color-bg-base: ${val.colorBgBase};
+      --color-bg-layout: ${val.colorBgLayout};
+      --color-bg-elevated: ${val.colorBgElevated};
+      --color-bg-container: ${val.colorBgContainer};
+      --text1: ${val.colorText};
+      --text2: ${val.colorTextSecondary};
+      --text3: ${val.colorTextTertiary};
+      --text4: ${val.colorTextQuaternary};
     `;
     document.querySelector('html')?.setAttribute('style', style);
   }

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-import { packagesList } from '/@/datavComponents';
+import { packagesList } from '/@/packages';
 
 export const usePackageStore = defineStore('package', () => {
   const state = reactive({

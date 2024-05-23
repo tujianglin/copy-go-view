@@ -1,6 +1,16 @@
 {
   "colors": {
     "primary": "var(--color-primary)",
-    "bgcolor": "#101014"
+    "primaryBg": "var(--color-primary-bg)",
+    "active": "var(--color-primary-active)",
+    "bgHover": "var(--color-primary-bg-hover)",
+    "base": "var( --color-bg-base)",
+    "layout": "var(--color-bg-layout)",
+    "elevated": "var(--color-bg-elevated)",
+    "container": "var(--color-bg-container)",
+    "text1": "var(--text1)",
+    "text2": "var(--text2)",
+    "text3": "var(--text3)",
+    "text4": "var(--text4)"
   }
 }

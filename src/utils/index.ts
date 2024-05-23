@@ -28,3 +28,11 @@ export const fetchRouteParamsLocation = () => {
 export const setTitle = (title: string) => {
   title && (document.title = title);
 };
+
+/**
+ * * 获取错误处理图片，默认 404 图
+ * @returns url
+ */
+export const requireErrorImg = () => {
+  return getAssetsFile('/images/exception/image-404.png');
+};

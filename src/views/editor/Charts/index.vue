@@ -1,18 +1,21 @@
 <script lang="tsx">
   import { Layout, Menu } from 'ant-design-vue';
-  import { defineComponent } from 'vue';
-  import { useAppStore } from '/@/store/modules/app';
+  import { defineComponent, watch } from 'vue';
   import { useAsideHook } from './hooks';
+  import OptionContent from './components/OptionContent/index.vue';
   export default defineComponent({
     setup() {
-      const appStore = useAppStore();
-      const { selectValue, clickItemHandle, menuOptions } = useAsideHook();
+      const { selectOptions, selectValue, clickItemHandle, menuOptions } = useAsideHook();
+      watch(selectOptions, (val) => {
+        console.log(val);
+      });
       return () => (
-        <Layout.Sider class="charts-sider" style={appStore.themeStyle}>
-          <Layout.Sider class="h-full" collapsedWidth={60} collapsed style={appStore.themeStyle}>
+        <>
+          <Layout.Sider class="charts-sider h-full overflow-y-auto !bg-elevated" collapsedWidth={60} collapsed>
             <Menu v-model:selectedKeys={selectValue.value} class="h-full" items={menuOptions} onClick={clickItemHandle}></Menu>
           </Layout.Sider>
-        </Layout.Sider>
+          {selectOptions.value ? <OptionContent selectOptions={selectOptions.value} key={selectValue.value[0]}></OptionContent> : ''}
+        </>
       );
     },
   });

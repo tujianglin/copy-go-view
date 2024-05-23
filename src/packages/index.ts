@@ -1,7 +1,8 @@
-import { PackagesType } from '/#/components.d';
+import { ChartList } from '/@/packages/components/Charts';
+import { PackagesType } from './index.d';
 
 export const packagesList: PackagesType = {
-  Charts: [],
+  Charts: ChartList,
   Tables: [],
   Informations: [],
   Photos: [],

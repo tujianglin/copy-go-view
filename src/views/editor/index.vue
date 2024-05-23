@@ -12,6 +12,7 @@
           <Header></Header>
           <Layout>
             <Charts></Charts>
+            <Layout.Content></Layout.Content>
           </Layout>
         </Layout>
       );
