@@ -1,5 +1,6 @@
 import { RequestConfigType } from '/@/store/types';
 import { GlobalThemeJsonType } from '/@/settings/chartSetting';
+import { InteractEvents } from '/@/enums/eventEnum';
 
 // 滤镜/变换枚举
 export enum FilterEnum {
@@ -25,6 +26,37 @@ export enum FilterEnum {
   // 混合模式
   BLEND_MODE = 'blendMode',
 }
+
+// 包分类枚举
+export enum PackagesCategoryEnum {
+  CHARTS = 'Charts',
+  TABLES = 'Tables',
+  INFORMATIONS = 'Informations',
+  PHOTOS = 'Photos',
+  ICONS = 'Icons',
+  DECORATES = 'Decorates',
+}
+
+// 包分类名称
+export enum PackagesCategoryName {
+  CHARTS = '图表',
+  TABLES = '列表',
+  INFORMATIONS = '信息',
+  PHOTOS = '图片',
+  ICONS = '图标',
+  DECORATES = '小组件',
+}
+
+// 图表包类型
+export type PackagesType = {
+  [PackagesCategoryEnum.CHARTS]: ConfigType[];
+  [PackagesCategoryEnum.INFORMATIONS]: ConfigType[];
+  [PackagesCategoryEnum.TABLES]: ConfigType[];
+  [PackagesCategoryEnum.PHOTOS]: ConfigType[];
+  [PackagesCategoryEnum.ICONS]: ConfigType[];
+  [PackagesCategoryEnum.DECORATES]: ConfigType[];
+};
+
 // 组件实例类
 export interface PublicConfigType {
   id: string;
@@ -37,11 +69,9 @@ export interface PublicConfigType {
     [FilterEnum.CONTRAST]: number;
     [FilterEnum.HUE_ROTATE]: number;
     [FilterEnum.BRIGHTNESS]: number;
-
     [FilterEnum.ROTATE_Z]: number;
     [FilterEnum.ROTATE_X]: number;
     [FilterEnum.ROTATE_Y]: number;
-
     [FilterEnum.SKEW_X]: number;
     [FilterEnum.SKEW_Y]: number;
     [FilterEnum.BLEND_MODE]: string;

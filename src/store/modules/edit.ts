@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-import { ChartEditStoreType, EditCanvasConfigType } from '../types';
+import { EditStoreType, EditCanvasConfigType, EditStoreEnum, EditCanvasTypeEnum } from '../types';
 import { defaultTheme, globalThemeJson } from '/@/settings/chartSetting';
 import { previewScaleType, requestInterval, requestIntervalUnit } from '/@/settings/designSetting';
 
 export const useEditStore = defineStore('edit', () => {
-  const state = reactive<ChartEditStoreType>({
+  const state = reactive<EditStoreType>({
     // 画布属性
     editCanvas: {
       // 编辑区域 Dom
@@ -111,8 +111,36 @@ export const useEditStore = defineStore('edit', () => {
   function setEditCanvasConfig<T extends keyof EditCanvasConfigType, K extends EditCanvasConfigType[T]>(key: T, value: K) {
     state.editCanvasConfig[key] = value;
   }
+  // * 计算缩放
+  function computedScale() {
+    console.log(state[EditStoreEnum.EDIT_CANVAS][EditCanvasTypeEnum.EDIT_LAYOUT_DOM]);
+
+    if (state[EditStoreEnum.EDIT_CANVAS][EditCanvasTypeEnum.EDIT_LAYOUT_DOM]) {
+      // // 现有展示区域
+      // const width = state.editLayoutDom.clientWidth - state.offset * 2 - 5;
+      // const height = state.editLayoutDom.clientHeight - state.offset * 4;
+      // // 用户设定大小
+      // const editCanvasWidth = state.editCanvasConfig.width;
+      // const editCanvasHeight = state.editCanvasConfig.height;
+      // // 需保持的比例
+      // const baseProportion = parseFloat((editCanvasWidth / editCanvasHeight).toFixed(5));
+      // const currentRate = parseFloat((width / height).toFixed(5));
+      // if (currentRate > baseProportion) {
+      //   // 表示更宽
+      //   const scaleWidth = parseFloat(((height * baseProportion) / editCanvasWidth).toFixed(5));
+      //   state.setScale(scaleWidth > 1 ? 1 : scaleWidth);
+      // } else {
+      //   // 表示更高
+      //   const scaleHeight = parseFloat((width / baseProportion / editCanvasHeight).toFixed(5));
+      //   state.setScale(scaleHeight > 1 ? 1 : scaleHeight);
+      // }
+    } else {
+      window['$message'].warning('请先创建画布，再进行缩放');
+    }
+  }
   return {
     state,
     setEditCanvasConfig,
+    computedScale,
   };
 });

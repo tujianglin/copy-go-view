@@ -1,5 +1,65 @@
 import { RequestDataTypeEnum, RequestHttpEnum, RequestContentTypeEnum } from '/@/enums/httpEnum';
 import { FilterEnum } from '/#/components';
+
+// 坐标轴信息
+// eslint-disable-next-line no-redeclare
+export enum EditCanvasTypeEnum {
+  EDIT_LAYOUT_DOM = 'editLayoutDom',
+  EDIT_CONTENT_DOM = 'editContentDom',
+  OFFSET = 'offset',
+  SCALE = 'scale',
+  USER_SCALE = 'userScale',
+  LOCK_SCALE = 'lockScale',
+  IS_CREATE = 'isCreate',
+  IS_DRAG = 'isDrag',
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT = 'isCodeEdit',
+  START_X = 'startX',
+  START_Y = 'startY',
+  X = 'x',
+  Y = 'y',
+}
+
+// 滤镜/背景色/宽高主题等
+export enum EditCanvasConfigEnum {
+  PROJECT_NAME = 'projectName',
+  WIDTH = 'width',
+  HEIGHT = 'height',
+  CHART_THEME_COLOR = 'chartThemeColor',
+  CHART_CUSTOM_THEME_COLOR_INFO = 'chartCustomThemeColorInfo',
+  CHART_THEME_SETTING = 'chartThemeSetting',
+  BACKGROUND = 'background',
+  BACKGROUND_IMAGE = 'backgroundImage',
+  SELECT_COLOR = 'selectColor',
+  PREVIEW_SCALE_TYPE = 'previewScaleType',
+}
+// Store 枚举
+export enum EditStoreEnum {
+  EDIT_RANGE = 'editRange',
+  EDIT_CANVAS = 'editCanvas',
+  RIGHT_MENU_SHOW = 'rightMenuShow',
+  MOUSE_POSITION = 'mousePosition',
+  TARGET_CHART = 'targetChart',
+  RECORD_CHART = 'recordChart',
+  // 以下需要存储
+  EDIT_CANVAS_CONFIG = 'editCanvasConfig',
+  REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
+  COMPONENT_LIST = 'componentList',
+}
+
+// Store 枚举
+export enum EditStoreEnum {
+  EDIT_RANGE = 'editRange',
+  EDIT_CANVAS = 'editCanvas',
+  RIGHT_MENU_SHOW = 'rightMenuShow',
+  MOUSE_POSITION = 'mousePosition',
+  TARGET_CHART = 'targetChart',
+  RECORD_CHART = 'recordChart',
+  // 以下需要存储
+  EDIT_CANVAS_CONFIG = 'editCanvasConfig',
+  REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
+  COMPONENT_LIST = 'componentList',
+}
 export interface EditCanvasConfigType {
   // 滤镜-启用
   [FilterEnum.FILTERS_SHOW]: boolean;
@@ -40,33 +100,6 @@ export interface EditCanvasConfigType {
   [EditCanvasConfigEnum.SELECT_COLOR]: boolean;
   // 预览展示方式
   [EditCanvasConfigEnum.PREVIEW_SCALE_TYPE]: PreviewScaleEnum;
-}
-
-// 滤镜/背景色/宽高主题等
-export enum EditCanvasConfigEnum {
-  PROJECT_NAME = 'projectName',
-  WIDTH = 'width',
-  HEIGHT = 'height',
-  CHART_THEME_COLOR = 'chartThemeColor',
-  CHART_CUSTOM_THEME_COLOR_INFO = 'chartCustomThemeColorInfo',
-  CHART_THEME_SETTING = 'chartThemeSetting',
-  BACKGROUND = 'background',
-  BACKGROUND_IMAGE = 'backgroundImage',
-  SELECT_COLOR = 'selectColor',
-  PREVIEW_SCALE_TYPE = 'previewScaleType',
-}
-// Store 枚举
-export enum ChartEditStoreEnum {
-  EDIT_RANGE = 'editRange',
-  EDIT_CANVAS = 'editCanvas',
-  RIGHT_MENU_SHOW = 'rightMenuShow',
-  MOUSE_POSITION = 'mousePosition',
-  TARGET_CHART = 'targetChart',
-  RECORD_CHART = 'recordChart',
-  // 以下需要存储
-  EDIT_CANVAS_CONFIG = 'editCanvasConfig',
-  REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
-  COMPONENT_LIST = 'componentList',
 }
 // 编辑区域
 export type EditCanvasType = {
@@ -155,13 +188,20 @@ export interface RequestConfigType extends RequestPublicConfigType {
   };
 }
 // Store 类型
-export interface ChartEditStoreType {
-  [ChartEditStoreEnum.EDIT_CANVAS]: EditCanvasType;
-  [ChartEditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType;
-  [ChartEditStoreEnum.RIGHT_MENU_SHOW]: boolean;
-  [ChartEditStoreEnum.MOUSE_POSITION]: MousePositionType;
-  [ChartEditStoreEnum.TARGET_CHART]: TargetChartType;
-  [ChartEditStoreEnum.RECORD_CHART]?: RecordChartType;
-  [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType;
-  [ChartEditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>;
+export interface EditStoreType {
+  [EditStoreEnum.EDIT_CANVAS]: EditCanvasType;
+  [EditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType;
+  [EditStoreEnum.RIGHT_MENU_SHOW]: boolean;
+  [EditStoreEnum.MOUSE_POSITION]: MousePositionType;
+  [EditStoreEnum.TARGET_CHART]: TargetChartType;
+  [EditStoreEnum.RECORD_CHART]?: RecordChartType;
+  [EditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType;
+  [EditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>;
+}
+
+// 存储数据类型
+export interface EditStorage {
+  [EditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType;
+  [EditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType;
+  [EditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>;
 }

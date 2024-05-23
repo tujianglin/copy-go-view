@@ -12,7 +12,7 @@
     setup() {
       const appStore = useAppStore();
       return () => (
-        <Layout.Header class="flex-between !p-inline-4" style={{ background: appStore.appConfig.darkTheme ? '#101014' : '#fff' }}>
+        <Layout.Header class="flex-between !p-inline-4" style={appStore.themeStyle}>
           <LeftBtn></LeftBtn>
           <Title></Title>
           <RightBtn></RightBtn>

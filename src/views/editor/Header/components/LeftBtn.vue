@@ -1,36 +1,39 @@
 <script lang="tsx">
   import { Button, Divider, Space, Tooltip } from 'ant-design-vue';
   import { Ref, computed, defineComponent, reactive } from 'vue';
-  import { ChartLayoutStoreEnum, HistoryStackEnum } from '/@/store/types';
+  import { LayoutStoreEnum, HistoryStackEnum } from '/@/store/types';
   import { useHistoryStore } from '/@/store/modules/history';
   import { useLayoutStore } from '/@/store/modules/layout';
   import { storeToRefs } from 'pinia';
-  interface ItemType<T> {
+  interface ItemType<T = any> {
     key: T;
     select: Ref<boolean> | boolean;
     title: string;
   }
   export default defineComponent({
     setup() {
-      const { state } = storeToRefs(useLayoutStore());
+      const layoutStore = useLayoutStore();
+      const { state } = storeToRefs(layoutStore);
       const historyStore = useHistoryStore();
-      const btnList = reactive<ItemType<ChartLayoutStoreEnum>[]>([
-        {
-          key: ChartLayoutStoreEnum.CHARTS,
-          select: state.value.charts,
-          title: '图表组件',
-        },
-        {
-          key: ChartLayoutStoreEnum.LAYERS,
-          select: state.value.layers,
-          title: '图层控制',
-        },
-        {
-          key: ChartLayoutStoreEnum.DETAILS,
-          select: state.value.details,
-          title: '详情设置',
-        },
-      ]);
+      const btnList = computed<ItemType<LayoutStoreEnum>[]>(() => {
+        return [
+          {
+            key: LayoutStoreEnum.CHARTS,
+            select: state.value[LayoutStoreEnum.CHARTS],
+            title: '图表组件',
+          },
+          {
+            key: LayoutStoreEnum.LAYERS,
+            select: state.value[LayoutStoreEnum.LAYERS],
+            title: '图层控制',
+          },
+          {
+            key: LayoutStoreEnum.DETAILS,
+            select: state.value[LayoutStoreEnum.DETAILS],
+            title: '详情设置',
+          },
+        ];
+      });
       const isBackStack = computed(() => historyStore.state.backStack.length > 1);
 
       const isForwardStack = computed(() => historyStore.state.forwardStack.length > 0);
@@ -49,17 +52,20 @@
         },
       ]);
 
-      function styleHandle(item: ItemType<ChartLayoutStoreEnum>) {
-        if (item.key === ChartLayoutStoreEnum.DETAILS) {
+      function styleHandle(item: ItemType<LayoutStoreEnum>) {
+        if (item.key === LayoutStoreEnum.DETAILS) {
           return item.select ? 'default' : 'primary';
         }
         return item.select ? 'primary' : 'default';
       }
+      function onClick(i: ItemType) {
+        layoutStore.setItem(i.key, !i.select);
+      }
       return () => (
         <Space>
-          {btnList.map((i) => (
+          {btnList.value.map((i) => (
             <Tooltip title={i.title}>
-              <Button type={styleHandle(i)} ghost>
+              <Button type={styleHandle(i)} onClick={() => onClick(i)}>
                 {i.title}
               </Button>
             </Tooltip>
@@ -67,7 +73,7 @@
           <Divider type="vertical"></Divider>
           {historyList.map((i) => (
             <Tooltip title={i.title}>
-              <Button type="primary" disabled={!i.select} ghost>
+              <Button type="primary" disabled={!i.select}>
                 {i.title}
               </Button>
             </Tooltip>

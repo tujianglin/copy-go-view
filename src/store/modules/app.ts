@@ -3,14 +3,13 @@ import { defineStore } from 'pinia';
 import { defaultSetting } from '/@/settings/designSetting';
 import { AppConfig } from '/#/storage';
 import { store } from '/@/store';
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref, watch, CSSProperties } from 'vue';
 import { theme as antdTheme } from 'ant-design-vue';
 import { Storage } from '/@/utils/storage';
 import { StorageEnum } from '/@/enums/storageEnum';
 
 export const useAppStore = defineStore('app', () => {
   const { darkAlgorithm, compactAlgorithm } = antdTheme;
-
   const appConfig = reactive<AppConfig>(Storage.getLocal(StorageEnum.APP_CONFIG) || defaultSetting);
   const themeConfig = reactive<ThemeConfig>({
     algorithm: appConfig.darkTheme ? [darkAlgorithm, compactAlgorithm] : compactAlgorithm,
@@ -19,8 +18,16 @@ export const useAppStore = defineStore('app', () => {
     },
   });
   const locale = ref<string>(appConfig.locale);
+  const themeStyle = ref<CSSProperties>({
+    background: appConfig.darkTheme ? '#101014' : '#fff',
+  });
 
   watch(appConfig, (val) => {
+    if (val.darkTheme) {
+      themeStyle.value.background = '#101014';
+    } else {
+      themeStyle.value.background = '#fff';
+    }
     Storage.setLocal(StorageEnum.APP_CONFIG, val);
   });
 
@@ -70,6 +77,7 @@ export const useAppStore = defineStore('app', () => {
     appConfig,
     theme: themeConfig,
     locale,
+    themeStyle,
     setAppStyle,
     toggleLocale,
     toggleTheme,

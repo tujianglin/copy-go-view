@@ -38,10 +38,7 @@
 
       function ColorRender(i) {
         return (
-          <div
-            class="min-w-75 flex items-center p-2 b-rd-1 b-1 b-solid b-transparent shadow-[0_8px_20px_#00000026] hover:(b-1 b-solid b-[var(--color-primary)]) cursor-pointer"
-            onClick={() => onClick(i)}
-          >
+          <div class="min-w-75 flex items-center p-2 b-rd-1 b-1 b-solid b-transparent shadow-[0_8px_20px_#00000026] hover:(b-1 b-solid b-primary) cursor-pointer" onClick={() => onClick(i)}>
             <div class="w-2 h-10 b-rd-0.5 mr-2" style={{ backgroundColor: i.hex }}></div>
             <Space direction="vertical">
               <Space>
