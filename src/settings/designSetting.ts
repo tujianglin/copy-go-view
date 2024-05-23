@@ -4,9 +4,8 @@ import { PreviewScaleEnum } from '/@/enums/styleEnum';
 import { RequestHttpIntervalEnum } from '/@/enums/httpEnum';
 
 export const defaultSetting: AppConfig = {
-  /* 主题色 */
+  darkTheme: true,
   colorPrimary: '#3b8e8e',
-  /* 多语言 */
   locale: 'zh_CN',
   collapsed: false,
 };

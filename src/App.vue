@@ -1,16 +1,27 @@
 <script lang="tsx">
-  import { defineComponent } from 'vue';
+  import { defineComponent, watch } from 'vue';
   import { RouterView } from 'vue-router';
-  import { ConfigProvider, App } from 'ant-design-vue';
+  import { ConfigProvider, App, theme } from 'ant-design-vue';
   import 'dayjs/locale/zh-cn';
   import { useLocale } from '/@/locales/useLocale';
   import { useAppStore } from '/@/store/modules/app';
   export default defineComponent({
     setup() {
+      const appStore = useAppStore();
       const { getAntdLocale } = useLocale();
-      const { theme } = useAppStore();
+      const { token } = theme.useToken();
+      watch(
+        token,
+        (val) => {
+          appStore.setAppStyle(val);
+        },
+        {
+          deep: true,
+        },
+      );
+
       return () => (
-        <ConfigProvider locale={getAntdLocale.value} theme={theme}>
+        <ConfigProvider locale={getAntdLocale.value} theme={appStore.theme}>
           <App class="h-full">
             <RouterView></RouterView>
           </App>

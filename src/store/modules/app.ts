@@ -13,7 +13,7 @@ export const useAppStore = defineStore('app', () => {
 
   const appConfig = reactive<AppConfig>(Storage.getLocal(StorageEnum.APP_CONFIG) || defaultSetting);
   const themeConfig = reactive<ThemeConfig>({
-    algorithm: [darkAlgorithm, compactAlgorithm],
+    algorithm: appConfig.darkTheme ? [darkAlgorithm, compactAlgorithm] : compactAlgorithm,
     token: {
       colorPrimary: appConfig.colorPrimary,
     },
@@ -26,26 +26,53 @@ export const useAppStore = defineStore('app', () => {
 
   /**
    * 切换多语言
-   * @param locale
+   * @param lang
    */
-  const toggleLocale = (locale: string) => {
-    appConfig.locale = locale;
-  };
+  function toggleLocale(lang: string) {
+    locale.value = lang;
+    appConfig.locale = lang;
+    window.location.reload();
+  }
+
+  function toggleTheme() {
+    appConfig.darkTheme = !appConfig.darkTheme;
+    if (!appConfig.darkTheme) {
+      themeConfig.algorithm = compactAlgorithm;
+    } else {
+      themeConfig.algorithm = [darkAlgorithm, compactAlgorithm];
+    }
+  }
 
   /**
    * 切换主题色
    * @param color
    */
-  const toggleColorPrimary = (color: string) => {
+  function toggleColorPrimary(color: string) {
     appConfig.colorPrimary = color;
     if (themeConfig.token) {
       themeConfig.token.colorPrimary = color;
     }
-  };
+  }
+
+  function setAppStyle(val) {
+    const style = `
+      --color-primary: ${val.colorPrimary};
+      --color-primary-bg: ${val.colorPrimaryBg};
+      --color-primary-active: ${val.colorPrimaryActive};
+      --color-primary-bg-hover: ${val.colorPrimaryBgHover};
+      --color-error: ${val.colorError};
+      --color-warning: ${val.colorWarning};
+      --color-text-disabled: ${val.colorTextDisabled};
+    `;
+    document.querySelector('html')?.setAttribute('style', style);
+  }
   return {
+    appConfig,
     theme: themeConfig,
     locale,
+    setAppStyle,
     toggleLocale,
+    toggleTheme,
     toggleColorPrimary,
   };
 });

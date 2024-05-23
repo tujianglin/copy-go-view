@@ -1,5 +1,5 @@
 import { defineAsyncComponent, AsyncComponentLoader } from 'vue';
-import { AsyncLoading } from '/@/components/Loading';
+import { AsyncLoading } from '/@/components/Application';
 
 /**
  * * 异步加载组件

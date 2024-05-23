@@ -30,7 +30,7 @@ export function useLocale() {
   const getLocale = computed(() => appStore.locale);
 
   const getAntdLocale = computed<Locale>((): any => {
-    return i18n.global.getLocaleMessage<{ antdLocale: Locale }>(unref(getLocale)).antdLocale;
+    return i18n.global.getLocaleMessage<{ antdLocal: Locale }>(unref(getLocale)).antdLocal;
   });
 
   async function changeLocale(locale) {
