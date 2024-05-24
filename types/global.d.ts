@@ -1,3 +1,5 @@
+import { App } from 'vue';
+
 declare type Recordable<T = any> = Record<string, T>;
 declare interface ViteEnv {
   VITE_PORT: number;
@@ -6,4 +8,10 @@ declare interface ViteEnv {
   VITE_GLOB_APP_TITLE: string;
   VITE_DROP_CONSOLE: boolean;
   VITE_GLOB_API_URL: string;
+}
+
+declare global {
+  interface Window {
+    $vue: App;
+  }
 }

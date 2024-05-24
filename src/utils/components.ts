@@ -12,3 +12,14 @@ export const loadAsyncComponent = (loader: AsyncComponentLoader<any>) =>
     loadingComponent: AsyncLoading,
     delay: 20,
   });
+
+/**
+ * 动态注册组件
+ * @param key
+ * @param node
+ */
+export const componentInstall = <T>(key: string, node: T) => {
+  if (!window.$vue.component(key) && node) {
+    window.$vue.component(key, node);
+  }
+};

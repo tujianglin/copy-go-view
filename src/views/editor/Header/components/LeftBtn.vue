@@ -5,6 +5,7 @@
   import { useHistoryStore } from '/@/store/modules/history';
   import { useLayoutStore } from '/@/store/modules/layout';
   import { storeToRefs } from 'pinia';
+  import { useEditStore } from '/@/store/modules/edit';
   interface ItemType<T = any> {
     key: T;
     select: Ref<boolean> | boolean;
@@ -13,6 +14,7 @@
   export default defineComponent({
     setup() {
       const layoutStore = useLayoutStore();
+      const editStore = useEditStore();
       const { state } = storeToRefs(layoutStore);
       const historyStore = useHistoryStore();
       const btnList = computed<ItemType<LayoutStoreEnum>[]>(() => {
@@ -34,7 +36,7 @@
           },
         ];
       });
-      const isBackStack = computed(() => historyStore.state.backStack.length > 1);
+      const isBackStack = computed(() => historyStore.state.backStack.length > 0);
 
       const isForwardStack = computed(() => historyStore.state.forwardStack.length > 0);
 
@@ -61,6 +63,16 @@
       function onClick(i: ItemType) {
         layoutStore.setItem(i.key, !i.select);
       }
+      function onClickHistory(item: ItemType<HistoryStackEnum>) {
+        switch (item.key) {
+          case HistoryStackEnum.BACK_STACK:
+            editStore.setBack();
+            break;
+          case HistoryStackEnum.FORWARD_STACK:
+            editStore.setForward();
+            break;
+        }
+      }
       return () => (
         <Space>
           {btnList.value.map((i) => (
@@ -73,7 +85,7 @@
           <Divider type="vertical"></Divider>
           {historyList.map((i) => (
             <Tooltip title={i.title}>
-              <Button type="primary" disabled={!i.select}>
+              <Button type="primary" disabled={!i.select} onClick={() => onClickHistory(i)}>
                 {i.title}
               </Button>
             </Tooltip>

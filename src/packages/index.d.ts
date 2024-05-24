@@ -30,6 +30,51 @@ export type ConfigType = {
   configEvents?: { [T: string]: Function };
 };
 
+// 组件实例类
+export interface PublicConfigType {
+  id: string;
+  isGroup: boolean;
+  attr: { x: number; y: number; w: number; h: number; zIndex: number; offsetX: number; offsetY: number };
+  styles: {
+    filterShow: boolean;
+    opacity: number;
+    saturate: number;
+    contrast: number;
+    hueRotate: number;
+    brightness: number;
+
+    rotateZ: number;
+    rotateX: number;
+    rotateY: number;
+
+    skewX: number;
+    skewY: number;
+    blendMode: string;
+    // 动画
+    animations: string[];
+  };
+  preview?: {
+    // 预览超出隐藏
+    overFlowHidden?: boolean;
+  };
+  filter?: string;
+  status: StatusType;
+  interactActions?: InteractActionsType[];
+  events: {
+    baseEvent: {
+      [K in BaseEvent]?: string;
+    };
+    advancedEvents: {
+      [K in EventLife]?: string;
+    };
+    interactEvents: {
+      interactOn: InteractEventOn | undefined;
+      interactComponentId: string | undefined;
+      interactFn: { [name: string]: string };
+    }[];
+  };
+}
+
 export enum ChartFrameEnum {
   // 支持 dataset 的 echarts 框架
   ECHARTS = 'echarts',
@@ -70,3 +115,26 @@ export type PackagesType = {
   Icons: ConfigType[];
   Decorates: ConfigType[];
 };
+
+// 获取组件
+export enum FetchComFlagType {
+  VIEW,
+  CONFIG,
+}
+
+// 数据请求
+interface requestConfig {
+  request: RequestConfigType;
+}
+
+export interface CreateComponentType extends PublicConfigType, requestConfig {
+  key: string;
+  chartConfig: ConfigType;
+  option: GlobalThemeJsonType;
+  groupList?: Array<CreateComponentType>;
+}
+
+// 组件成组实例类
+export interface CreateComponentGroupType extends CreateComponentType {
+  groupList: Array<CreateComponentType>;
+}

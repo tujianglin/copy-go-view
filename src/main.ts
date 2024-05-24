@@ -21,6 +21,7 @@ async function bootstrap() {
   await setupRouter(app);
   setupRouterGuard(router);
   app.mount('#app');
+  window.$vue = app;
 }
 
 bootstrap();

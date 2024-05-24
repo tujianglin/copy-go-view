@@ -1,14 +1,11 @@
 <script lang="tsx">
   import { Layout, Menu } from 'ant-design-vue';
-  import { defineComponent, watch } from 'vue';
+  import { defineComponent } from 'vue';
   import { useAsideHook } from './hooks';
   import OptionContent from './components/OptionContent/index.vue';
   export default defineComponent({
     setup() {
       const { selectOptions, selectValue, clickItemHandle, menuOptions } = useAsideHook();
-      watch(selectOptions, (val) => {
-        console.log(val);
-      });
       return () => (
         <>
           <Layout.Sider class="charts-sider h-full overflow-y-auto !bg-elevated" collapsedWidth={60} collapsed>

@@ -3,7 +3,8 @@
   import { PropType, defineComponent, reactive, ref, watch } from 'vue';
   import { useLayoutStore } from '/@/store/modules/layout';
   import { ConfigType } from '/@/packages/index.d';
-  import ItemBox from '../ItemBox/index.vue';
+  import { loadAsyncComponent } from '/@/utils/components';
+  const ItemBox = loadAsyncComponent(() => import('../ItemBox/index.vue'));
   export default defineComponent({
     props: {
       selectOptions: {
