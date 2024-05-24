@@ -3,7 +3,7 @@ import { reactive, toRaw } from 'vue';
 import { EditStoreType, EditCanvasConfigType, HistoryItemType, HistoryTargetTypeEnum, EditCanvasType, HistoryActionTypeEnum } from '../types';
 import { defaultTheme, globalThemeJson } from '/@/settings/chartSetting';
 import { previewScaleType, requestInterval, requestIntervalUnit } from '/@/settings/designSetting';
-import { CreateComponentType, CreateComponentGroupType } from '/@/packages/index.d';
+import { CreateComponentType, CreateComponentGroupType } from '../../packages/types';
 import { useHistoryStore } from './history';
 import { cloneDeep, isArray, isString } from 'lodash-es';
 import { PublicGroupConfigClass } from '/@/packages/public';

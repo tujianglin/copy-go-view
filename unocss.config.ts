@@ -30,6 +30,8 @@ export default defineConfig({
     ['flex-center', 'flex items-center justify-center'],
     ['flex-between', 'flex items-center justify-between'],
     ['flex-end', 'flex items-end justify-between'],
+    ['bd-layout', ' b-layout b-solid b-1'],
+    ['bd-primary', ' b-primary b-solid b-1'],
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 });

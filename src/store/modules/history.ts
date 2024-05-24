@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-import { CreateComponentGroupType, CreateComponentType } from '/@/packages/index.d';
+import { CreateComponentGroupType, CreateComponentType } from '../../packages/types';
 import { EditCanvasType, HistoryActionTypeEnum, HistoryItemType, HistoryStackItemEnum, HistoryTargetTypeEnum } from '../types';
 import { editHistoryMax } from '/@/settings/designSetting';
 

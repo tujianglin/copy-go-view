@@ -3,7 +3,7 @@ import { chartInitConfig, groupTitle } from '/@/settings/designSetting';
 import { getUUID } from '/@/utils';
 import { RequestConfigType } from '/@/store/types';
 import { RequestBodyEnum, RequestContentTypeEnum, RequestDataTypeEnum, RequestHttpEnum, RequestHttpIntervalEnum } from '/@/enums/httpEnum';
-import { ChartFrameEnum, CreateComponentGroupType, CreateComponentType, PublicConfigType } from '../index.d';
+import { ChartFrameEnum, CreateComponentGroupType, CreateComponentType, PublicConfigType } from '../types';
 import { BaseEvent, EventLife } from '/@/enums/eventEnum';
 
 // 请求基础属性

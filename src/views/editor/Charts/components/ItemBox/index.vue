@@ -1,6 +1,6 @@
 <script lang="tsx">
   import { PropType, defineComponent, ref } from 'vue';
-  import { ConfigType, CreateComponentType } from '/@/packages/index.d';
+  import { ConfigType, CreateComponentType } from '/@/packages/types';
   import { fetchImages } from '/@/utils/image';
   import { componentInstall } from '/@/utils/components';
   import { fetchChartComponent, createComponent } from '/@/packages';
@@ -45,7 +45,7 @@
         <div class="p-2">
           <div class="group flex flex-wrap justify-between gap-2">
             {props.menuOptions.map((i) => (
-              <div class="bg-container w-full overflow-hidden b-rd-1.5 cursor-pointer b-1 b-solid b-layout" draggable onDblclick={() => onDblclick(i)}>
+              <div class="bg-container w-full overflow-hidden b-rd-1.5 cursor-pointer bd-layout" draggable onDblclick={() => onDblclick(i)}>
                 <div class="bg-layout flex items-center justify-between px-4 py-0.5 text-text2">{i.title}</div>
                 <div class="py-2 overflow-hidden flex-center">{fetchImageUrl(i.image)}</div>
               </div>
@@ -57,3 +57,4 @@
   });
 </script>
 <style lang="less" scoped></style>
+../../../../../packages/types

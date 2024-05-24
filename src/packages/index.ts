@@ -1,5 +1,5 @@
 import { ChartList } from '/@/packages/components/Charts';
-import { ConfigType, FetchComFlagType, PackagesType } from './index.d';
+import { ConfigType, FetchComFlagType, PackagesType } from './types';
 
 const indexModules: Record<string, { default: string }> = import.meta.glob('./components/**/index.vue', {
   eager: true,

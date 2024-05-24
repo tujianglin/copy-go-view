@@ -16,7 +16,7 @@
             <Title></Title>
             <RightBtn></RightBtn>
           </div>
-          <div class="b-0.5 b-layout b-solid relative z-99"></div>
+          <div class="bd-layout relative z-99"></div>
         </Layout.Header>
       );
     },

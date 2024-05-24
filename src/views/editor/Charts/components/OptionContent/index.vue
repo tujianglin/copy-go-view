@@ -2,7 +2,7 @@
   import { Layout, Menu } from 'ant-design-vue';
   import { PropType, defineComponent, reactive, ref, watch } from 'vue';
   import { useLayoutStore } from '/@/store/modules/layout';
-  import { ConfigType } from '/@/packages/index.d';
+  import { ConfigType } from '/@/packages/types';
   import { loadAsyncComponent } from '/@/utils/components';
   const ItemBox = loadAsyncComponent(() => import('../ItemBox/index.vue'));
   export default defineComponent({
@@ -109,3 +109,4 @@
     }
   }
 </style>
+../../../../../packages/types
