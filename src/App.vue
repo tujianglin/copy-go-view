@@ -22,7 +22,7 @@
 
       return () => (
         <ConfigProvider locale={getAntdLocale.value} theme={appStore.theme}>
-          <App class="h-full">
+          <App class="h-full relative">
             <RouterView></RouterView>
           </App>
         </ConfigProvider>

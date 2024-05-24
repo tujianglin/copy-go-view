@@ -1,4 +1,4 @@
-import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '../../../../types';
+import { ConfigType, PackagesCategoryEnum, ChartFrameEnum } from '/@/packages/types';
 import { ChatCategoryEnum, ChatCategoryEnumName } from '../../index.d';
 
 export const BarConfig: ConfigType = {

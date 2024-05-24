@@ -1,14 +1,19 @@
 import { defineStore } from 'pinia';
 import { reactive, toRaw } from 'vue';
-import { EditStoreType, EditCanvasConfigType, HistoryItemType, HistoryTargetTypeEnum, EditCanvasType, HistoryActionTypeEnum } from '../types';
+import { EditStoreType, EditCanvasConfigType, HistoryItemType, HistoryTargetTypeEnum, EditCanvasType, HistoryActionTypeEnum, RecordChartType } from '../types';
 import { defaultTheme, globalThemeJson } from '/@/settings/chartSetting';
 import { previewScaleType, requestInterval, requestIntervalUnit } from '/@/settings/designSetting';
-import { CreateComponentType, CreateComponentGroupType } from '../../packages/types';
-import { useHistoryStore } from './history';
+import { CreateComponentType, CreateComponentGroupType } from '/@/packages/types';
 import { cloneDeep, isArray, isString } from 'lodash-es';
 import { PublicGroupConfigClass } from '/@/packages/public';
+import { getUUID } from '/@/utils';
+import { MenuEnum } from '/@/enums/editPageEnum';
+import { useHistoryStore } from './history';
+import { useSettingStore } from './setting';
+import { message } from 'ant-design-vue';
 
 const historyStore = useHistoryStore();
+const settingStore = useSettingStore();
 
 export const useEditStore = defineStore('edit', () => {
   const state = reactive<EditStoreType>({
@@ -281,6 +286,31 @@ export const useEditStore = defineStore('edit', () => {
     return sortArr;
   }
   /**
+   * 移动位置
+   * @param keyboardValue
+   * @returns
+   */
+  function setMove(keyboardValue: MenuEnum) {
+    const index = fetchTargetIndex();
+    if (index === -1) return;
+    const attr = state.componentList[index].attr;
+    const distance = settingStore.state.chartMoveDistance;
+    switch (keyboardValue) {
+      case MenuEnum.ARROW_UP:
+        attr.y -= distance;
+        break;
+      case MenuEnum.ARROW_RIGHT:
+        attr.x += distance;
+        break;
+      case MenuEnum.ARROW_DOWN:
+        attr.y += distance;
+        break;
+      case MenuEnum.ARROW_LEFT:
+        attr.x -= distance;
+        break;
+    }
+  }
+  /**
    * 创建分组
    * @param id
    * @param isHistory
@@ -475,8 +505,64 @@ export const useEditStore = defineStore('edit', () => {
   function setShow(isHistory: boolean = true) {
     setHide(false, isHistory);
   }
+  /** 复制 */
+  function setCopy(isCut = false) {
+    try {
+      // 暂不支持多选
+      if (state.targetChart.selectId.length > 1) return;
+      const index: number = fetchTargetIndex();
+      if (index !== -1) {
+        const copyData: RecordChartType = {
+          charts: state.componentList[index],
+          type: isCut ? HistoryActionTypeEnum.CUT : HistoryActionTypeEnum.COPY,
+        };
+        setRecordChart(copyData);
+        message.success(isCut ? '剪切图表成功' : '复制图表成功');
+      }
+    } catch (value) {}
+  }
+  /** 剪切 */
+  function setCut() {
+    setCopy(true);
+  }
+  /** 粘贴 */
+  function setParse() {
+    try {
+      const recordCharts = state.recordChart;
+      if (recordCharts === undefined) {
+        return;
+      }
+      const parseHandle = (e: CreateComponentType | CreateComponentGroupType) => {
+        e = cloneDeep(e);
+        e.attr.x = state.mousePosition.startX;
+        e.attr.y = state.mousePosition.startY;
+        // 外层生成新 id
+        e.id = getUUID();
+        // 分组列表生成新 id
+        if (e.isGroup) {
+          (e as CreateComponentGroupType).groupList.forEach((item: CreateComponentType) => {
+            item.id = getUUID();
+          });
+        }
+
+        return e;
+      };
+      const isCut = recordCharts.type === HistoryActionTypeEnum.CUT;
+      const targetList = Array.isArray(recordCharts.charts) ? recordCharts.charts : [recordCharts.charts];
+      // 多项
+      targetList.forEach((e: CreateComponentType | CreateComponentGroupType) => {
+        addComponentList(parseHandle(e), undefined, true);
+        // 剪切需删除原数据
+        if (isCut) {
+          setTargetSelectChart(e.id);
+          removeComponentList(undefined, true);
+        }
+      });
+      if (isCut) setRecordChart(undefined);
+    } catch (value) {}
+  }
   /**
-   *
+   * 撤回/前进 目标处理
    * @param HistoryItem
    * @param isForward
    * @returns
@@ -550,7 +636,6 @@ export const useEditStore = defineStore('edit', () => {
       setDown(false);
       return;
     }
-
     // 处理分组
     const isGroup = HistoryItem.actionType === HistoryActionTypeEnum.GROUP;
     const isUnGroup = HistoryItem.actionType === HistoryActionTypeEnum.UN_GROUP;
@@ -578,7 +663,6 @@ export const useEditStore = defineStore('edit', () => {
       }
       return;
     }
-
     // 处理锁定
     const isLock = HistoryItem.actionType === HistoryActionTypeEnum.LOCK;
     const isUnLock = HistoryItem.actionType === HistoryActionTypeEnum.UNLOCK;
@@ -594,7 +678,6 @@ export const useEditStore = defineStore('edit', () => {
       });
       return;
     }
-
     // 处理隐藏
     const isHide = HistoryItem.actionType === HistoryActionTypeEnum.HIDE;
     const isShow = HistoryItem.actionType === HistoryActionTypeEnum.SHOW;
@@ -790,13 +873,36 @@ export const useEditStore = defineStore('edit', () => {
     if (index < 1 && index > state.componentList.length) return;
     state.componentList[index] = newData;
   }
+  /**
+   * 设置记录数据
+   * @param item
+   */
+  function setRecordChart(item: RecordChartType | undefined) {
+    state.recordChart = cloneDeep(item);
+  }
   return {
     state,
     addComponentList,
+    removeComponentList,
     setEditCanvasConfig,
     computedScale,
     setTargetSelectChart,
+    setMove,
+    setLock,
+    setUnLock,
+    setHide,
+    setShow,
+    setCopy,
+    setCut,
+    setParse,
+    setGroup,
+    setUnGroup,
+    setUp,
+    setDown,
+    setBottom,
+    setTop,
     setBack,
     setForward,
+    setRecordChart,
   };
 });

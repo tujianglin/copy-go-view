@@ -1,5 +1,5 @@
 import { h, ref } from 'vue';
-import { ConfigType } from '../../../../packages/types';
+import { ConfigType } from '/@/packages/types';
 import { usePackageStore } from '/@/store/modules/package';
 import { MehOutlined } from '@ant-design/icons-vue';
 import { LayoutStoreEnum } from '/@/store/types';

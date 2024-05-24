@@ -19,6 +19,7 @@
     "ant-design-vue": "^4.2.1",
     "axios": "^1.7.1",
     "dayjs": "^1.11.11",
+    "keymaster": "^1.6.2",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "vue": "^3.4.27",

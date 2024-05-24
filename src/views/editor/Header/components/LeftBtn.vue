@@ -96,4 +96,3 @@
   });
 </script>
 <style lang="less" scoped></style>
-../../../../store/types

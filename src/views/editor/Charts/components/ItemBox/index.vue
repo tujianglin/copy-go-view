@@ -57,4 +57,3 @@
   });
 </script>
 <style lang="less" scoped></style>
-../../../../../packages/types

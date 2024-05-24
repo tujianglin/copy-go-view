@@ -13,5 +13,10 @@ declare interface ViteEnv {
 declare global {
   interface Window {
     $vue: App;
+    $KeyboardActive: {
+      ctrl: boolean;
+      space: boolean;
+    };
+    onKeySpacePressHold?: Function;
   }
 }

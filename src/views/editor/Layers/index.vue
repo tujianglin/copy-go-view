@@ -24,7 +24,7 @@
 
       return () => (
         <Layout.Sider class="charts-sider  b-l b-solid b-layout h-full overflow-y-auto !bg-elevated" width={200} collapsedWidth={0} collapsed={!layoutStore.state.layers}>
-          <div class="mt-2">
+          <div class="pt-2">
             <Draggable item-key="id" list={layerList.value}>
               {{
                 item: ({ element }) => <div class="flex-center">{element.isGroup ? <div>11</div> : <ListItem componentData={element}></ListItem>}</div>,

@@ -1,6 +1,6 @@
 import { echartOptionProfixHandle, PublicConfigClass } from '/@/packages/public';
 import { BarConfig } from './index';
-import { CreateComponentType } from '../../../../types';
+import { CreateComponentType } from '/@/packages/types';
 import { cloneDeep } from 'lodash-es';
 import dataJson from './data.json';
 
