@@ -7,6 +7,7 @@
   import { toRaw } from 'vue';
   import { MenuEnum, MouseEventButton } from '/@/enums/editPageEnum';
   import { MenuOptionsItemType, useContextMenu } from '../../../ContextMenu/useContextMenu';
+  import Status from '../Status/index.vue';
   export default defineComponent({
     props: {
       componentData: {
@@ -30,6 +31,14 @@
       const select = computed(() => {
         return editStore.state.targetChart.selectId.find((i) => i === id);
       });
+      // 悬浮对象
+      const hover = computed(() => {
+        return props.componentData.id === editStore.state.targetChart.hoverId;
+      });
+      // 组件状态 隐藏/锁定
+      const status = computed(() => {
+        return props.componentData.status;
+      });
       // 获取图片
       function fetchImageUrl(image) {
         const imageInfo = ref('');
@@ -49,6 +58,12 @@
           return;
         }
         editStore.setTargetSelectChart(id);
+      }
+      function onMouseenter() {
+        editStore.state.targetChart.hoverId = id;
+      }
+      function onMouseleave() {
+        editStore.state.targetChart.hoverId = undefined;
       }
       // 右键事件
       function optionsHandle(targetList: MenuOptionsItemType[], _: MenuOptionsItemType[], targetInstance: CreateComponentType) {
@@ -71,8 +86,18 @@
         return targetList.filter((item) => !statusMenuEnums.includes(item.key as MenuEnum));
       }
       return () => (
-        <div class="group mb-1 relative w-[90%] cursor-pointer" onMousedown={onMousedown} onContextmenu={(e) => handleContextMenu(e, props.componentData, optionsHandle)}>
-          <div class={['p-1 b-rd-1 bd-layout group-hover:(bg-bg-hover bd-primary)', { select: select.value }]}>{fetchImageUrl(props.componentData.chartConfig?.image)}</div>
+        <div
+          class="group mb-1 relative w-[90%] cursor-pointer "
+          onMousedown={onMousedown}
+          onMouseenter={onMouseenter}
+          onMouseleave={onMouseleave}
+          onContextmenu={(e) => handleContextMenu(e, props.componentData, optionsHandle)}
+        >
+          <div class={['flex items-center justify-between p-1 mb-1 b-rd-1 b-transparent b-1 b-solid group-hover:(bg-layout)', { '!bg-bg-hover !bd-primary': select.value }]}>
+            {fetchImageUrl(props.componentData.chartConfig?.image)}
+            <div class="flex-1 ml-1 text-3 text-ellipsis">{props.componentData.chartConfig.title}</div>
+            <Status isGroup={props.isGroup} hover={hover.value} status={status.value}></Status>
+          </div>
         </div>
       );
     },

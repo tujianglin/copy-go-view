@@ -138,3 +138,9 @@ export interface CreateComponentType extends PublicConfigType, requestConfig {
 export interface CreateComponentGroupType extends CreateComponentType {
   groupList: Array<CreateComponentType>;
 }
+
+// 组件状态
+export interface StatusType {
+  lock: boolean;
+  hide: boolean;
+}

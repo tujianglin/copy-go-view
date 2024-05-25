@@ -32,6 +32,8 @@ export default defineConfig({
     ['flex-end', 'flex items-end justify-between'],
     ['bd-layout', ' b-layout b-solid b-1'],
     ['bd-primary', ' b-primary b-solid b-1'],
+    ['text-ellipsis', 'text-ellipsis overflow-hidden whitespace-nowrap'],
+    ['wh-full', 'w-full h-full'],
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
 });

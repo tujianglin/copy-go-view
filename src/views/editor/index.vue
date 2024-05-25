@@ -3,8 +3,10 @@
   import { defineComponent } from 'vue';
   import { loadAsyncComponent } from '/@/utils/components';
   const Header = loadAsyncComponent(() => import('./Header/index.vue'));
-  const Charts = loadAsyncComponent(() => import('./Charts/index.vue'));
-  const Layers = loadAsyncComponent(() => import('./Layers/index.vue'));
+  const ComponentPanel = loadAsyncComponent(() => import('./ComponentPanel/index.vue'));
+  const LayerPanel = loadAsyncComponent(() => import('./LayerPanel/index.vue'));
+  const CanvasMain = loadAsyncComponent(() => import('./CanvasMain/index.vue'));
+  const ConfigPanel = loadAsyncComponent(() => import('./ConfigPanel/index.vue'));
   const ContextMenu = loadAsyncComponent(() => import('./ContextMenu/index.vue'));
 
   export default defineComponent({
@@ -13,8 +15,12 @@
         <Layout class="h-full">
           <Header></Header>
           <Layout>
-            <Charts></Charts>
-            <Layers></Layers>
+            <ComponentPanel></ComponentPanel>
+            <LayerPanel></LayerPanel>
+            <Layout>
+              <CanvasMain></CanvasMain>
+              <ConfigPanel></ConfigPanel>
+            </Layout>
           </Layout>
           <ContextMenu></ContextMenu>
         </Layout>
