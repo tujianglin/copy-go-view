@@ -4,7 +4,7 @@ import { EditStoreType, EditCanvasConfigType, HistoryItemType, HistoryTargetType
 import { defaultTheme, globalThemeJson } from '/@/settings/chartSetting';
 import { previewScaleType, requestInterval, requestIntervalUnit } from '/@/settings/designSetting';
 import { CreateComponentType, CreateComponentGroupType } from '/@/packages/types';
-import { cloneDeep, isArray, isString } from 'lodash-es';
+import { cloneDeep, debounce, isArray, isString } from 'lodash-es';
 import { PublicGroupConfigClass } from '/@/packages/public';
 import { getUUID } from '/@/utils';
 import { MenuEnum } from '/@/enums/editPageEnum';
@@ -167,6 +167,14 @@ export const useEditStore = defineStore('edit', () => {
     } catch (value) {}
   }
   /**
+   * 设置 editCanvas 数据项
+   * @param key
+   * @param value
+   */
+  function setEditCanvas<T extends keyof EditCanvasType, K extends EditCanvasType[T]>(key: T, value: K) {
+    state.editCanvas[key] = value;
+  }
+  /**
    * 设置editCanvasConfig（需保存后端） 数据项
    * @param key
    * @param value
@@ -177,24 +185,24 @@ export const useEditStore = defineStore('edit', () => {
   /** 计算缩放 */
   function computedScale() {
     if (state.editCanvas.editLayoutDom) {
-      // // 现有展示区域
-      // const width = state.editLayoutDom.clientWidth - state.offset * 2 - 5;
-      // const height = state.editLayoutDom.clientHeight - state.offset * 4;
-      // // 用户设定大小
-      // const editCanvasWidth = state.editCanvasConfig.width;
-      // const editCanvasHeight = state.editCanvasConfig.height;
-      // // 需保持的比例
-      // const baseProportion = parseFloat((editCanvasWidth / editCanvasHeight).toFixed(5));
-      // const currentRate = parseFloat((width / height).toFixed(5));
-      // if (currentRate > baseProportion) {
-      //   // 表示更宽
-      //   const scaleWidth = parseFloat(((height * baseProportion) / editCanvasWidth).toFixed(5));
-      //   state.setScale(scaleWidth > 1 ? 1 : scaleWidth);
-      // } else {
-      //   // 表示更高
-      //   const scaleHeight = parseFloat((width / baseProportion / editCanvasHeight).toFixed(5));
-      //   state.setScale(scaleHeight > 1 ? 1 : scaleHeight);
-      // }
+      // 现有展示区域
+      const width = state.editCanvas.editLayoutDom.clientWidth - state.editCanvas.offset * 2 - 5;
+      const height = state.editCanvas.editLayoutDom.clientHeight - state.editCanvas.offset * 4;
+      // 用户设定大小
+      const editCanvasWidth = state.editCanvasConfig.width;
+      const editCanvasHeight = state.editCanvasConfig.height;
+      // 需保持的比例
+      const baseProportion = parseFloat((editCanvasWidth / editCanvasHeight).toFixed(5));
+      const currentRate = parseFloat((width / height).toFixed(5));
+      if (currentRate > baseProportion) {
+        // 表示更宽
+        const scaleWidth = parseFloat(((height * baseProportion) / editCanvasWidth).toFixed(5));
+        setScale(scaleWidth > 1 ? 1 : scaleWidth);
+      } else {
+        // 表示更高
+        const scaleHeight = parseFloat((width / baseProportion / editCanvasHeight).toFixed(5));
+        setScale(scaleHeight > 1 ? 1 : scaleHeight);
+      }
     } else {
       // window['$message'].warning('请先创建画布，再进行缩放');
     }
@@ -880,10 +888,58 @@ export const useEditStore = defineStore('edit', () => {
   function setRecordChart(item: RecordChartType | undefined) {
     state.recordChart = cloneDeep(item);
   }
+  /**
+   * 设置页面样式属性
+   * @param key
+   * @param value
+   */
+  function setPageStyle<T extends keyof CSSStyleDeclaration>(key: T, value: any): void {
+    const dom = state.editCanvas.editContentDom;
+    if (dom) {
+      dom.style[key] = value;
+    }
+  }
+  /**
+   * 设置页面大小
+   * @param scale
+   */
+  function setPageSize(scale: number): void {
+    setPageStyle('height', `${state.editCanvasConfig.height * scale}px`);
+    setPageStyle('width', `${state.editCanvasConfig.width * scale}px`);
+  }
+  /**
+   * 设置缩放
+   * @param scale
+   * @param force
+   */
+  function setScale(scale: number, force = false): void {
+    if (!state.editCanvas.lockScale || force) {
+      setPageSize(scale);
+      state.editCanvas.userScale = scale;
+      state.editCanvas.scale = scale;
+    }
+  }
+  /**
+   * 监听缩放
+   * @returns
+   */
+  function listenerScale(): Fn {
+    const resize = debounce(computedScale, 200);
+    // 默认执行一次
+    resize();
+    // 开始监听
+    window.addEventListener('resize', resize);
+    // 销毁函数
+    const remove = () => {
+      window.removeEventListener('resize', resize);
+    };
+    return remove;
+  }
   return {
     state,
     addComponentList,
     removeComponentList,
+    setEditCanvas,
     setEditCanvasConfig,
     computedScale,
     setTargetSelectChart,
@@ -904,5 +960,7 @@ export const useEditStore = defineStore('edit', () => {
     setBack,
     setForward,
     setRecordChart,
+    setScale,
+    listenerScale,
   };
 });

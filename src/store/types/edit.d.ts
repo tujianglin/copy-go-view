@@ -14,6 +14,19 @@ export enum EditCanvasConfigEnum {
   PREVIEW_SCALE_TYPE = 'previewScaleType',
 }
 
+// 编辑画布属性
+export enum EditCanvasTypeEnum {
+  EDIT_LAYOUT_DOM = 'editLayoutDom',
+  EDIT_CONTENT_DOM = 'editContentDom',
+  OFFSET = 'offset',
+  SCALE = 'scale',
+  USER_SCALE = 'userScale',
+  LOCK_SCALE = 'lockScale',
+  IS_CREATE = 'isCreate',
+  IS_DRAG = 'isDrag',
+  IS_SELECT = 'isSelect',
+  IS_CODE_EDIT = 'isCodeEdit',
+}
 export interface EditCanvasConfigType {
   // 滤镜-启用
   filterShow: boolean;

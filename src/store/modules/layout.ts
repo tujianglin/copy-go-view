@@ -28,6 +28,12 @@ export const useLayoutStore = defineStore('layout', () => {
     // 防止值不存在
     ...storageChartLayout,
   });
+  /**
+   *
+   * @param key
+   * @param value
+   * @param computedScale
+   */
   function setItem<T extends keyof LayoutStoreType, K extends LayoutStoreType[T]>(key: T, value: K, computedScale = true) {
     state[key] = value;
     // 存储本地
@@ -41,8 +47,17 @@ export const useLayoutStore = defineStore('layout', () => {
       }, 500);
     }
   }
+  /**
+   *
+   * @param key
+   * @param value
+   */
+  function setItemUnHandle<T extends keyof LayoutStoreType, K extends LayoutStoreType[T]>(key: T, value: K): void {
+    state[key] = value;
+  }
   return {
     state,
     setItem,
+    setItemUnHandle,
   };
 });
