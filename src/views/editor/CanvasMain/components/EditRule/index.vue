@@ -1,30 +1,29 @@
 <script lang="tsx">
-  import { throttle } from 'lodash-es';
-  import { computed, defineComponent, onMounted, reactive, ref, watch, onUnmounted } from 'vue';
-  import SketchRule from 'vue3-sketch-ruler';
-  import { useAppStore } from '/@/store/modules/app';
+  import { computed, defineComponent, onUnmounted, reactive, ref, watch } from 'vue';
   import { useEditStore } from '/@/store/modules/edit';
+  import { CSSProperties } from 'vue';
   import { storeToRefs } from 'pinia';
+  import { onMounted } from 'vue';
+  import { throttle } from 'lodash-es';
+  import SketchRule from 'vue3-sketch-ruler';
+  import { listen } from 'dom-helpers';
+  import { useAppStore } from '/@/store/modules/app';
   import { useLayoutStore } from '/@/store/modules/layout';
   import { LayoutStoreEnum } from '/@/store/types';
-  import { CSSProperties } from 'vue';
   export default defineComponent({
-    setup() {
-      const thick = 20;
-      const appStore = useAppStore();
+    setup(_, { slots }) {
       const editStore = useEditStore();
       const layoutStore = useLayoutStore();
       const { state } = storeToRefs(editStore);
-      const sketchRuleReDraw = ref(true);
-      const editorRef = ref();
-      const containerRef = ref();
-      const sketchRuleBoxRef = ref();
+      const thick = 20;
+      let prevMoveXValue = [0, 0];
+      let prevMoveYValue = [0, 0];
+      const appStore = useAppStore();
       const startX = ref(0);
+      const isPressSpace = ref(false);
       const startY = ref(0);
       const lines = reactive({ h: [], v: [] });
-
       const scale = computed(() => state.value.editCanvas.scale);
-      // 主题
       const paletteStyle = computed(() => {
         const isDarkTheme = appStore.appConfig.darkTheme;
         return isDarkTheme
@@ -39,11 +38,41 @@
             }
           : {};
       });
+      // 布局处理
+      const ruleBoxStyle = ref();
+      const editorRef = ref<HTMLElement>();
+      const containerRef = ref<HTMLElement>();
+      const sketchRuleBoxRef = ref<HTMLElement>();
+      const sketchRuleReDraw = ref(true);
       const containerStyle = computed((): CSSProperties => {
-        return { width: `${state.value.editCanvasConfig.width + 2}px`, height: `${state.value.editCanvasConfig.height * 2}px` };
+        return { width: `${state.value.editCanvasConfig.width * 2}px`, height: `${state.value.editCanvasConfig.height * 2}px` };
       });
+      function canvasBox() {
+        const layoutDom = document.getElementById('edit-layout');
+        let width = 0;
+        let height = 0;
+        if (layoutDom) {
+          // 此处减去滚动条的宽度和高度
+          const scrollW = 20;
+          height = layoutDom.clientHeight - scrollW;
+          width = layoutDom.clientWidth - scrollW;
+        } else {
+          width = state.value.editCanvasConfig.width;
+          height = state.value.editCanvasConfig.height;
+        }
+        return {
+          width,
+          height,
+        };
+      }
+      // 滚动居中
+      function canvasPosCenter() {
+        const { width: containerWidth, height: containerHeight } = containerRef.value.getBoundingClientRect();
+        editorRef.value.scrollLeft = containerWidth / 2 - canvasBox().width / 2;
+        editorRef.value.scrollTop = containerHeight / 2 - canvasBox().height / 2;
+        ruleBoxStyle.value = { marginLeft: '-' + (canvasBox().width / 2 - 25) + 'px' };
+      }
 
-      // 重绘标尺
       const reDraw = throttle(() => {
         sketchRuleReDraw.value = false;
         setTimeout(() => {
@@ -51,6 +80,22 @@
         }, 10);
       }, 20);
 
+      // 处理标尺重制大小
+      watch(
+        () => scale.value,
+        (nVal, oVal) => {
+          if (oVal !== nVal || layoutStore.state.rePositionCanvas) {
+            layoutStore.setItemUnHandle(LayoutStoreEnum.RE_POSITION_CANVAS, false);
+            onScroll();
+            setTimeout(() => {
+              canvasPosCenter();
+              reDraw();
+            }, 100);
+          } else {
+            reDraw();
+          }
+        },
+      );
       // 处理主题变化
       watch(
         () => appStore.appConfig.darkTheme,
@@ -59,59 +104,6 @@
         },
       );
 
-      watch(
-        () => scale.value,
-        (nVal, oVal) => {
-          if (oVal !== nVal && layoutStore.state.rePositionCanvas) {
-            layoutStore.setItemUnHandle(LayoutStoreEnum.RE_POSITION_CANVAS, false);
-            onScroll();
-            setTimeout(() => {
-              canvasPosCenter();
-              reDraw();
-            }, 400);
-          } else {
-            reDraw();
-          }
-        },
-      );
-
-      onMounted(() => {
-        if (editorRef.value) {
-          editorRef.value.addEventListener('wheel', handleWheel, { passive: false });
-          canvasPosCenter();
-        }
-      });
-
-      onUnmounted(() => {
-        if (editorRef.value) {
-          editorRef.value.removeEventListener('wheel', handleWheel);
-        }
-      });
-
-      // 计算画布大小
-      function canvasBox() {
-        const layoutDom = document.getElementById('edit-layout');
-        if (layoutDom) {
-          // 此处减去滚动条的宽度和高度
-          const scrollW = 20;
-          return {
-            height: layoutDom.clientHeight - scrollW,
-            width: layoutDom.clientWidth - scrollW,
-          };
-        }
-        return {
-          width: state.value.editCanvasConfig.width,
-          height: state.value.editCanvasConfig.height,
-        };
-      }
-      // 滚动居中
-      function canvasPosCenter() {
-        const { width: containerWidth, height: containerHeight } = containerRef.value.getBoundingClientRect();
-        const { width, height } = canvasBox();
-
-        editorRef.value.scrollLeft = containerWidth / 2 - width / 2;
-        editorRef.value.scrollTop = containerHeight / 2 - height / 2;
-      }
       // 滚动条处理
       function onScroll() {
         if (!editorRef.value) return;
@@ -140,43 +132,86 @@
           }
         }
       }
+
+      function onMousedown(e: MouseEvent) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.which == 2) isPressSpace.value = true;
+        else if (!window.$KeyboardActive?.space) return;
+        // @ts-ignore
+        document.activeElement?.blur();
+        const startX = e.pageX;
+        const startY = e.pageY;
+
+        const listenMousemove = listen(window, 'mousemove', (e: any) => {
+          const nx = e.pageX - startX;
+          const ny = e.pageY - startY;
+
+          const [prevMoveX1, prevMoveX2] = prevMoveXValue;
+          const [prevMoveY1, prevMoveY2] = prevMoveYValue;
+
+          prevMoveXValue = [prevMoveX2, nx];
+          prevMoveYValue = [prevMoveY2, ny];
+
+          editorRef.value.scrollLeft -= prevMoveX2 > prevMoveX1 ? Math.abs(prevMoveX2 - prevMoveX1) : -Math.abs(prevMoveX2 - prevMoveX1);
+          editorRef.value.scrollTop -= prevMoveY2 > prevMoveY1 ? Math.abs(prevMoveY2 - prevMoveY1) : -Math.abs(prevMoveY2 - prevMoveY1);
+        });
+
+        const listenMouseup = listen(window, 'mouseup', () => {
+          listenMousemove();
+          listenMouseup();
+          prevMoveXValue = [0, 0];
+          prevMoveYValue = [0, 0];
+          isPressSpace.value = false;
+        });
+      }
+
+      onMounted(() => {
+        if (editorRef.value) {
+          editorRef.value.addEventListener('wheel', handleWheel, { passive: false });
+          canvasPosCenter();
+        }
+      });
+
+      onUnmounted(() => {
+        if (editorRef.value) {
+          editorRef.value.removeEventListener('wheel', handleWheel);
+        }
+      });
+
+      window.onKeySpacePressHold = (isHold: boolean) => {
+        isPressSpace.value = isHold;
+      };
       return () => (
         <div class="wh-full overflow-hidden">
           {sketchRuleReDraw.value ? (
-            <>
-              <SketchRule
-                ratio={1}
-                thick={thick}
-                scale={scale.value}
-                width={canvasBox().width}
-                height={canvasBox().height}
-                startX={startX.value}
-                startY={startY.value}
-                palette={paletteStyle.value}
-                lines={lines}
-              ></SketchRule>
-              <div ref={editorRef} class="absolute wh-full overflow-auto select-none pb-0" onScroll={onScroll}>
-                <div ref={containerRef} class="absolute top-0 left-0" style={containerStyle.value}>
-                  <div ref={sketchRuleBoxRef}></div>
-                </div>
-              </div>
-            </>
+            <SketchRule
+              ratio={1}
+              thick={thick}
+              scale={scale.value}
+              width={canvasBox().width}
+              height={canvasBox().height}
+              startX={startX.value}
+              startY={startY.value}
+              palette={paletteStyle.value}
+              lines={lines}
+            ></SketchRule>
           ) : (
             ''
           )}
+          <div ref={editorRef} class="absolute wh-full overflow-auto select-none pb-0" onScroll={onScroll}>
+            <div ref={containerRef} class="relative" style={containerStyle.value}>
+              <div ref={sketchRuleBoxRef} class="canvas" style={ruleBoxStyle.value} onMousedown={onMousedown}>
+                <div style={{ pointerEvents: isPressSpace.value ? 'none' : 'auto' }}>{slots?.default?.()}</div>
+              </div>
+            </div>
+          </div>
         </div>
       );
     },
   });
 </script>
 <style>
-  /* 使用 SCSS 会报错，直接使用最基础的 CSS 进行修改，
-此库有计划 Vue3 版本，但是开发的时候还没发布 */
-  #mb-ruler {
-    top: 0;
-    left: 0;
-  }
-
   /* 横线 */
   #mb-ruler .v-container .lines .line {
     /* 最大缩放 200% */
@@ -214,5 +249,18 @@
 
   #mb-ruler .corner {
     border-width: 0 !important;
+  }
+</style>
+<style lang="less" scoped>
+  .canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 50% 0;
+    transform: translateY(-50%);
+
+    &:active {
+      cursor: crosshair;
+    }
   }
 </style>

@@ -570,6 +570,13 @@ export const useEditStore = defineStore('edit', () => {
     } catch (value) {}
   }
   /**
+   * 移动组件
+   * @param item
+   */
+  function moveComponentList(item: Array<CreateComponentType | CreateComponentGroupType>) {
+    historyStore.createMoveHistory(item);
+  }
+  /**
    * 撤回/前进 目标处理
    * @param HistoryItem
    * @param isForward
@@ -920,6 +927,20 @@ export const useEditStore = defineStore('edit', () => {
     }
   }
   /**
+   * 设置鼠标位置
+   * @param x
+   * @param y
+   * @param startX
+   * @param startY
+   */
+  function setMousePosition(x?: number, y?: number, startX?: number, startY?: number): void {
+    if (x) state.mousePosition.x = x;
+    if (y) state.mousePosition.y = y;
+    if (startX) state.mousePosition.startX = startX;
+    if (startY) state.mousePosition.startY = startY;
+  }
+
+  /**
    * 监听缩放
    * @returns
    */
@@ -958,9 +979,12 @@ export const useEditStore = defineStore('edit', () => {
     setBottom,
     setTop,
     setBack,
+    moveComponentList,
     setForward,
     setRecordChart,
     setScale,
+    setMousePosition,
     listenerScale,
+    fetchTargetIndex,
   };
 });

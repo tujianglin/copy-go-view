@@ -20,6 +20,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.11
     version: 1.11.11
+  dom-helpers:
+    specifier: ^5.2.1
+    version: 5.2.1
   keymaster:
     specifier: ^1.6.2
     version: 1.6.2
@@ -2655,6 +2658,13 @@ packages:
 
   /dom-align@1.12.4:
     resolution: {integrity: sha512-R8LUSEay/68zE5c8/3BDxiTEvgb4xZTF0RKmAHfiEVN3klfIpXfi2/QCoiWPccVQ0J/ZGdz9OjzL4uJEP/MRAw==}
+    dev: false
+
+  /dom-helpers@5.2.1:
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
+    dependencies:
+      '@babel/runtime': 7.24.5
+      csstype: 3.1.3
     dev: false
 
   /dom-scroll-into-view@2.0.1:

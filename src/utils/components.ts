@@ -1,5 +1,6 @@
 import { defineAsyncComponent, AsyncComponentLoader } from 'vue';
 import { AsyncLoading } from '/@/components/Application';
+import { CreateComponentGroupType, CreateComponentType } from '../packages/types';
 
 /**
  * * 异步加载组件
@@ -22,4 +23,15 @@ export const componentInstall = <T>(key: string, node: T) => {
   if (!window.$vue.component(key) && node) {
     window.$vue.component(key, node);
   }
+};
+
+/**
+ * 修改元素位置
+ * @param target 对象
+ * @param x X轴
+ * @param y Y轴
+ */
+export const setComponentPosition = (target: CreateComponentType | CreateComponentGroupType, x?: number, y?: number) => {
+  x && (target.attr.x = x);
+  y && (target.attr.y = y);
 };

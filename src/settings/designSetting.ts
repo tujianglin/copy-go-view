@@ -46,3 +46,9 @@ export const chartInitConfig = {
   offsetX: 0,
   offsetY: 0,
 };
+
+// 拖拽时蒙层的 z-index，需比所有图表高
+export const canvasModelIndex = 9999;
+
+// 框选时蒙层的 z-index，需比所有图表高
+export const selectBoxIndex = canvasModelIndex + 10;

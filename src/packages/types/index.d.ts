@@ -144,3 +144,6 @@ export interface StatusType {
   lock: boolean;
   hide: boolean;
 }
+
+// 获取组件实例类中某个key对应value类型的方法
+export type PickCreateComponentType<T extends keyof CreateComponentType> = Pick<CreateComponentType, T>[T];

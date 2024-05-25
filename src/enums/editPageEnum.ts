@@ -72,3 +72,7 @@ export enum MacKeyboard {
   ALT_SOURCE_KEY = '⌥',
   SPACE = 'Space',
 }
+
+export enum DragKeyEnum {
+  DRAG_KEY = 'ChartData',
+}

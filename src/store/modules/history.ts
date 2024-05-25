@@ -163,6 +163,13 @@ export const useHistoryStore = defineStore('history', () => {
   function createShowHistory(item: Array<CreateComponentType | CreateComponentGroupType>) {
     createStackItem(item, HistoryActionTypeEnum.SHOW, HistoryTargetTypeEnum.CHART);
   }
+  /**
+   * 移动组件记录
+   * @param item
+   */
+  function createMoveHistory(item: Array<CreateComponentType | CreateComponentGroupType>) {
+    createStackItem(item, HistoryActionTypeEnum.MOVE, HistoryTargetTypeEnum.CHART);
+  }
   return {
     state,
     createAddHistory,
@@ -176,5 +183,6 @@ export const useHistoryStore = defineStore('history', () => {
     createUnLockHistory,
     createHideHistory,
     createShowHistory,
+    createMoveHistory,
   };
 });
