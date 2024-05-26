@@ -1,22 +1,29 @@
 <script lang="tsx">
   import { Input, Space } from 'ant-design-vue';
-  import { computed, defineComponent, nextTick, ref } from 'vue';
+  import { defineComponent, nextTick, ref } from 'vue';
   import { useEditStore } from '/@/store/modules/edit';
-  import { EditCanvasConfigEnum } from '/@/store/types';
   import { fetchRouteParamsLocation, setTitle } from '/@/utils';
+  import { watch } from 'vue';
   export default defineComponent({
     setup() {
       const editStore = useEditStore();
       const title = ref(fetchProhectInfoById() || '');
       const focus = ref<boolean>(false);
       const inputRef = ref();
+      const comTitle = ref();
 
-      const comTitle = computed(() => {
-        const newTitle = title.value || '新项目';
-        setTitle(newTitle);
-        editStore.setEditCanvasConfig(EditCanvasConfigEnum.PROJECT_NAME, newTitle);
-        return newTitle;
-      });
+      watch(
+        title,
+        (val) => {
+          const newTitle = val || '新项目';
+          setTitle(newTitle);
+          editStore.state.editCanvasConfig.projectName = newTitle;
+          comTitle.value = newTitle;
+        },
+        {
+          immediate: true,
+        },
+      );
 
       // 根据路由 id 参数获取项目信息
       function fetchProhectInfoById() {

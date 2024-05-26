@@ -7,7 +7,7 @@ import { WinKeyboard } from '/@/enums/editPageEnum';
  * @returns
  */
 export const getAssetsFile = (url: string) => {
-  return new URL(`../assets${url}`, import.meta.url).href;
+  return new URL(`../assets/${url}`, import.meta.url).href;
 };
 
 /**
@@ -37,7 +37,7 @@ export const setTitle = (title: string) => {
  * @returns url
  */
 export const requireErrorImg = () => {
-  return getAssetsFile('/images/exception/image-404.png');
+  return getAssetsFile('images/exception/image-404.png');
 };
 
 /**
@@ -103,4 +103,13 @@ export const JSONParse = (data: string) => {
     }
     return v;
   });
+};
+
+/**
+ * * file转url
+ */
+export const fileToUrl = (file: File): string => {
+  const Url = URL || window.URL || window.webkitURL;
+  const ImageUrl = Url.createObjectURL(file);
+  return ImageUrl;
 };

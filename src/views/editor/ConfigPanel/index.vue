@@ -1,22 +1,37 @@
 <script lang="tsx">
-  import { Layout } from 'ant-design-vue';
+  import { Layout, Tabs } from 'ant-design-vue';
   import { defineComponent, ref, watch } from 'vue';
   import { useLayoutStore } from '/@/store/modules/layout';
   import { LayoutStoreEnum } from '/@/store/types';
+  import { useEditStore } from '/@/store/modules/edit';
+  import { TabsEnum } from './types';
+  import { loadAsyncComponent } from '/@/utils/components';
+  import { h } from 'vue';
+  const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'));
+
   export default defineComponent({
     setup() {
       const layoutStore = useLayoutStore();
+      const editStore = useEditStore();
       const collapsed = ref(layoutStore.state.charts);
+      const tabsSelect = ref<TabsEnum>(TabsEnum.CHART_SETTING);
+      const selectTarget = ref();
 
-      const collapsedHandle = () => {
-        collapsed.value = true;
-        layoutStore.setItem(LayoutStoreEnum.DETAILS, true);
-      };
-
-      const expandHandle = () => {
-        collapsed.value = false;
-        layoutStore.setItem(LayoutStoreEnum.DETAILS, false);
-      };
+      watch(
+        () => editStore.state.targetChart.selectId,
+        (val) => {
+          // 排除多个
+          if (val.length !== 1) {
+            selectTarget.value = undefined;
+            return;
+          }
+          const target = editStore.state.componentList[editStore.fetchTargetIndex()];
+          if (target?.isGroup) {
+            tabsSelect.value = TabsEnum.CHART_SETTING;
+          }
+          selectTarget.value = target;
+        },
+      );
 
       watch(
         () => layoutStore.state.details,
@@ -28,8 +43,76 @@
           }
         },
       );
-      return () => <Layout.Sider class="charts-sider h-full overflow-y-auto !bg-elevated" collapsedWidth={0} v-model:collapsed={layoutStore.state.details}></Layout.Sider>;
+
+      function collapsedHandle() {
+        collapsed.value = true;
+        layoutStore.setItem(LayoutStoreEnum.DETAILS, true);
+      }
+
+      function expandHandle() {
+        collapsed.value = false;
+        layoutStore.setItem(LayoutStoreEnum.DETAILS, false);
+      }
+
+      // 页面设置
+      const globalTabList = [
+        {
+          key: TabsEnum.PAGE_SETTING,
+          title: '页面配置',
+          render: CanvasPage,
+        },
+      ];
+
+      // const chartsDefaultTabList = [
+      //   {
+      //     key: TabsEnum.CHART_SETTING,
+      //     title: '定制',
+      //     icon: ConstructIcon,
+      //     render: ChartSetting,
+      //   },
+      //   {
+      //     key: TabsEnum.CHART_ANIMATION,
+      //     title: '动画',
+      //     icon: LeafIcon,
+      //     render: ChartAnimation,
+      //   },
+      // ];
+
+      // const chartsTabList = [
+      //   ...chartsDefaultTabList,
+      //   {
+      //     key: TabsEnum.CHART_DATA,
+      //     title: '数据',
+      //     icon: FlashIcon,
+      //     render: ChartData,
+      //   },
+      //   {
+      //     key: TabsEnum.CHART_EVENT,
+      //     title: '事件',
+      //     icon: RocketIcon,
+      //     render: ChartEvent,
+      //   },
+      // ];
+      return () => (
+        <Layout.Sider class="charts-sider h-full overflow-y-auto !bg-elevated" collapsedWidth={0} width={350} v-model:collapsed={layoutStore.state.details}>
+          {!selectTarget.value ? (
+            <Tabs class="h-full" centered>
+              {globalTabList.map((i) => (
+                <Tabs.TabPane key={i.key} tab={i.title}>
+                  {h(i.render)}
+                </Tabs.TabPane>
+              ))}
+            </Tabs>
+          ) : (
+            ''
+          )}
+        </Layout.Sider>
+      );
     },
   });
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  :deep(.ant-tabs-content) {
+    height: 100%;
+  }
+</style>

@@ -5,7 +5,7 @@
     setup() {
       return () => (
         <div class="wm-loading-svg flex-center">
-          <img src={getAssetsFile('/images/tips/loading.svg')} alt="" />
+          <img src={getAssetsFile('images/tips/loading.svg')} alt="" />
         </div>
       );
     },

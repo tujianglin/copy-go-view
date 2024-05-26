@@ -20,3 +20,9 @@ declare global {
     onKeySpacePressHold?: Function;
   }
 }
+
+declare module 'ant-design-vue' {
+  interface Input {
+    onClick: any;
+  }
+}
