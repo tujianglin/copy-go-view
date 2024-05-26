@@ -93,7 +93,7 @@
           onMouseleave={onMouseleave}
           onContextmenu={(e) => handleContextMenu(e, props.componentData, optionsHandle)}
         >
-          <div class={['flex items-center justify-between p-1 mb-1 b-rd-1 b-transparent b-1 b-solid group-hover:(bg-layout)', { '!bg-bg-hover !bd-primary': select.value }]}>
+          <div class={['flex items-center justify-between p-1 mb-1 b-rd-1 bd-transparent group-hover:(bg-layout)', { '!bg-bg-hover !bd-primary': select.value }]}>
             {fetchImageUrl(props.componentData.chartConfig?.image)}
             <div class="flex-1 ml-1 text-3 text-ellipsis">{props.componentData.chartConfig.title}</div>
             <Status isGroup={props.isGroup} hover={hover.value} status={status.value}></Status>

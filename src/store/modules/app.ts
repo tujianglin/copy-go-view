@@ -16,6 +16,7 @@ export const useAppStore = defineStore('app', () => {
     algorithm: appConfig.darkTheme ? [darkAlgorithm, compactAlgorithm] : compactAlgorithm,
     token: {
       colorPrimary: appConfig.colorPrimary,
+      sizeUnit: 3,
     },
   });
   const locale = ref<string>(appConfig.locale);

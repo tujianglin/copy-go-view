@@ -8,6 +8,7 @@
   import { loadAsyncComponent } from '/@/utils/components';
   import { h } from 'vue';
   const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'));
+  const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'));
 
   export default defineComponent({
     setup() {
@@ -60,6 +61,11 @@
           key: TabsEnum.PAGE_SETTING,
           title: '页面配置',
           render: CanvasPage,
+        },
+        {
+          key: TabsEnum.CHART_THEME,
+          title: '主题颜色',
+          render: ChartThemeColor,
         },
       ];
 

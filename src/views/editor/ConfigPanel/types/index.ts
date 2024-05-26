@@ -4,4 +4,5 @@ export enum TabsEnum {
   CHART_ANIMATION = 'chartAnimation',
   CHART_DATA = 'chartData',
   CHART_EVENT = 'chartEvent',
+  CHART_THEME = 'chartTheme',
 }
