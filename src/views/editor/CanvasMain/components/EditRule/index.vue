@@ -104,6 +104,11 @@
         },
       );
 
+      // 监听尺寸变化
+      watch([() => editStore.state.editCanvasConfig.width, () => editStore.state.editCanvasConfig.height], () => {
+        editStore.computedScale();
+      });
+
       // 滚动条处理
       function onScroll() {
         if (!editorRef.value) return;

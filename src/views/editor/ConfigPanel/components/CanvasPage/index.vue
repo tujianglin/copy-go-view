@@ -4,9 +4,9 @@
   import { useEditStore } from '/@/store/modules/edit';
   import { backgroundImageSize } from '/@/settings/designSetting';
   import { fileToUrl, getAssetsFile } from '/@/utils';
-  import ColorPicker from '/@/components/ColorPicker/src/index.vue';
   import { PreviewScaleEnum } from '/@/enums/styleEnum';
   import { Radio } from 'ant-design-vue';
+  import { StyleSetting, ColorPicker } from '/@/components';
   export default defineComponent({
     setup() {
       // 默认应用类型
@@ -130,6 +130,7 @@
               </Radio.Group>
             </Form.Item>
           </Form>
+          <StyleSetting isCanvas chartStyles={editCanvasConfig.value}></StyleSetting>
         </div>
       );
     },
