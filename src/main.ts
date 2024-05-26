@@ -4,6 +4,8 @@ import 'ant-design-vue/dist/reset.css';
 import '/@/styles/index.less';
 import 'uno.css';
 import 'vue3-sketch-ruler/lib/style.css';
+// 引入动画
+import 'animate.css/animate.min.css';
 import { router, setupRouter } from '/@/router';
 import { setupStore } from '/@/store';
 import { setupI18n } from '/@/locales';

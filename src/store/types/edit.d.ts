@@ -1,4 +1,5 @@
 import { RequestDataTypeEnum, RequestHttpEnum, RequestContentTypeEnum } from '/@/enums/httpEnum';
+import { CreateComponentType, CreateComponentGroupType } from '/@/packages/types';
 
 // 滤镜/背景色/宽高主题等
 export enum EditCanvasConfigEnum {

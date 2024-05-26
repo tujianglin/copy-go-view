@@ -17,6 +17,7 @@
     "@ant-design/icons-vue": "^7.0.1",
     "@simonwep/pickr": "^1.9.1",
     "@vueuse/core": "^10.9.0",
+    "animate.css": "^4.1.1",
     "ant-design-vue": "^4.2.1",
     "axios": "^1.7.1",
     "dayjs": "^1.11.11",

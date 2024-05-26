@@ -53,6 +53,15 @@ export const fetchChartComponent = (dropData: ConfigType) => {
 };
 
 /**
+ * * 获取配置组件
+ * @param {ConfigType} dropData 配置项
+ */
+export const fetchConfigComponent = (dropData: ConfigType) => {
+  const { key } = dropData;
+  return fetchComponent(key, FetchComFlagType.CONFIG)?.default;
+};
+
+/**
  * * 获取目标组件配置信息
  * @param targetData
  */

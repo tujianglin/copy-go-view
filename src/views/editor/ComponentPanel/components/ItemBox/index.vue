@@ -3,7 +3,7 @@
   import { ConfigType, CreateComponentType } from '/@/packages/types';
   import { fetchImages } from '/@/utils/image';
   import { componentInstall } from '/@/utils/components';
-  import { fetchChartComponent, createComponent } from '/@/packages';
+  import { fetchChartComponent, createComponent, fetchConfigComponent } from '/@/packages';
   import { useEditStore } from '/@/store/modules/edit';
   export default defineComponent({
     props: {
@@ -26,7 +26,7 @@
         try {
           // 动态注册图表组件
           componentInstall(i.chartKey, fetchChartComponent(i));
-          componentInstall(i.conKey, fetchChartComponent(i));
+          componentInstall(i.conKey, fetchConfigComponent(i));
           // 创建新图表组件
           const newComponent: CreateComponentType = await createComponent(i);
           if (i.redirectComponent) {
