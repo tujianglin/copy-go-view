@@ -11,6 +11,7 @@
   const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'));
   const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'));
   const ChartAnimation = loadAsyncComponent(() => import('./components/ChartAnimation/index.vue'));
+  const ChartData = loadAsyncComponent(() => import('./components/ChartData/index.vue'));
 
   export default defineComponent({
     setup() {
@@ -89,7 +90,7 @@
         {
           key: TabsEnum.CHART_DATA,
           title: '数据',
-          render: '',
+          render: ChartData,
         },
         {
           key: TabsEnum.CHART_EVENT,

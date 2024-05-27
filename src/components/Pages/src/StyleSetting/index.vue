@@ -27,7 +27,7 @@
             <Tag color="warning">解散分组「 {props.isCanvas ? '滤镜' : '滤镜 / 变换'} 」也将消失!</Tag>
           </div>
           <Collapse label={props.isCanvas ? '滤镜' : '滤镜 / 变换'} toggle v-model={chartStyles.value.filterShow}>
-            <Form colon={false} labelCol={{ span: 3 }} labelAlign="left">
+            <Form colon={false} labelCol={{ span: 4 }} labelAlign="left">
               <Form.Item label="色相">
                 <Slider v-model:value={chartStyles.value.hueRotate} step={3} min={0} max={360} tipFormatter={(val) => `${val}deg`}></Slider>
               </Form.Item>

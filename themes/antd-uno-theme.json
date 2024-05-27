@@ -8,6 +8,7 @@
     "layout": "var(--color-bg-layout)",
     "elevated": "var(--color-bg-elevated)",
     "container": "var(--color-bg-container)",
+    "bdcolor": "var(--color-border)",
     "text1": "var(--text1)",
     "text2": "var(--text2)",
     "text3": "var(--text3)",

@@ -50,3 +50,13 @@ export enum RequestHttpIntervalEnum {
   // 天
   DAY = 'day',
 }
+
+/**
+ * @description: 请求间隔名称
+ */
+export const SelectHttpTimeNameObj = {
+  [RequestHttpIntervalEnum.SECOND]: '秒',
+  [RequestHttpIntervalEnum.MINUTE]: '分',
+  [RequestHttpIntervalEnum.HOUR]: '时',
+  [RequestHttpIntervalEnum.DAY]: '天',
+};

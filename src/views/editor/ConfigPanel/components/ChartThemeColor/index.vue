@@ -17,7 +17,7 @@
         <div class="h-full overflow-auto p-2">
           {Object.entries(comChartColors.value).map(([key, val]) => (
             <div class="hover:(cursor-pointer)" onClick={() => (editCanvasConfig.value.chartThemeColor = key)}>
-              <Card class={['mb-4 bd-transparent', { 'bd-primary': key === editCanvasConfig.value.chartThemeColor }]}>
+              <Card class={['mb-4 bd-transparent bg-layout', { '!bd-primary': key === editCanvasConfig.value.chartThemeColor }]}>
                 <div class="flex justify-between ">
                   <div class="w-12">{val.name}</div>
                   {cloneDeep(val.color)

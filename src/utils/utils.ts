@@ -135,3 +135,22 @@ export const fileToUrl = (file: File): string => {
   const ImageUrl = Url.createObjectURL(file);
   return ImageUrl;
 };
+
+/* 复制 */
+export const copyText = async (text: string) => {
+  try {
+    if (navigator && 'clipboard' in navigator) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const input = document.createElement('textarea');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

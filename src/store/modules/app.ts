@@ -76,6 +76,7 @@ export const useAppStore = defineStore('app', () => {
       --color-bg-layout: ${val.colorBgLayout};
       --color-bg-elevated: ${val.colorBgElevated};
       --color-bg-container: ${val.colorBgContainer};
+      --color-border: ${val.colorBorder};
       --text1: ${val.colorText};
       --text2: ${val.colorTextSecondary};
       --text3: ${val.colorTextTertiary};

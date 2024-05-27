@@ -71,7 +71,7 @@
         <Layout.Content>
           <div class="wh-full relative overflow-hidden" id="edit-layout" onMousedown={mousedownHandleUnStop} onDrop={dragHandle} onDragover={dragoverHandle} onDragenter={dragoverHandle}>
             <EditRule>
-              <div id="edit-content" class="overflow-hidden transition-all-400" onContextmenu={handleContextMenu}>
+              <div id="edit-content" class="overflow-hidden transition-all-400 bd-shadow" onContextmenu={handleContextMenu}>
                 <EditRange class="transition-all-400">
                   <div class={{ ...getFilterStyle(editStore.state.editCanvasConfig), ...rangeStyle.value }}>
                     {editStore.state.componentList.map((item, index) => (
@@ -120,8 +120,5 @@
     background-size:
       15px 15px,
       15px 15px;
-    #edit-content {
-      box-shadow: 0 8px 10px rgba(30, 30, 30, 0.1215686275);
-    }
   }
 </style>

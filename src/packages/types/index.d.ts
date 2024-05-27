@@ -1,3 +1,5 @@
+import { RequestConfigType } from '/@/store/types';
+
 // 组件配置
 export type ConfigType = {
   // 组件 key

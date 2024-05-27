@@ -8,6 +8,7 @@ export default defineConfig({
   theme: {
     ...antdUnoTheme,
   },
+  rules: [['bd-shadow', { 'box-shadow': '0 8px 10px rgba(30, 30, 30, 0.12)' }]],
   presets: [
     presetUno(),
     presetAttributify(),
@@ -33,6 +34,7 @@ export default defineConfig({
     ['bd-layout', ' b-layout b-solid b-1'],
     ['bd-primary', ' b-primary b-solid b-1'],
     ['bd-transparent', 'b-transparent b-1 b-solid'],
+    ['bd-border', 'b-bdcolor b-1 b-solid'],
     ['text-ellipsis', 'text-ellipsis overflow-hidden whitespace-nowrap'],
     ['wh-full', 'w-full h-full'],
   ],
