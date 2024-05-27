@@ -10,6 +10,7 @@
   const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'));
   const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'));
   const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'));
+  const ChartAnimation = loadAsyncComponent(() => import('./components/ChartAnimation/index.vue'));
 
   export default defineComponent({
     setup() {
@@ -79,7 +80,7 @@
         {
           key: TabsEnum.CHART_ANIMATION,
           title: '动画',
-          render: '',
+          render: ChartAnimation,
         },
       ];
 
