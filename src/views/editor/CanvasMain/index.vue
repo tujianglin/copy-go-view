@@ -1,23 +1,46 @@
 <script lang="tsx">
   import { Layout } from 'ant-design-vue';
   import { CSSProperties, computed, defineComponent, h, onMounted, resolveComponent } from 'vue';
-  import { dragHandle, dragoverHandle, mousedownHandleUnStop, useLayout } from './hooks';
-  import { useContextMenu } from '../ContextMenu/useContextMenu';
+  import { dragHandle, dragoverHandle, mousedownHandleUnStop, useLayout, useMouseHandle } from './hooks';
+  import { MenuOptionsItemType, useContextMenu } from '../ContextMenu/useContextMenu';
   import { useAddKeyboard } from '/@/hooks/events/useKeyboard';
   import { useEditStore } from '/@/store/modules/edit';
   import { animationsClass, colorCustomMerge, getBlendModeStyle, getFilterStyle, getTransformStyle } from '/@/utils';
+  import { useComponentStyle, useSizeStyle } from './hooks/useStyle';
 
   import EditRule from './components/EditRule/index.vue';
   import EditRange from './components/EditRange/index.vue';
   import EditShapeBox from './components/EditShapeBox/index.vue';
-  import { useComponentStyle, useSizeStyle } from './hooks/useStyle';
+  import EditGroup from './components/EditGroup/index.vue';
+  import { CreateComponentGroupType, CreateComponentType } from '/@/packages/types';
+  import { MenuEnum } from '/@/enums/editPageEnum';
   export default defineComponent({
     setup() {
       const { handleContextMenu } = useContextMenu();
+      const { mouseenterHandle, mouseleaveHandle, mousedownHandle, mouseClickHandle } = useMouseHandle();
+
       const editStore = useEditStore();
       // 布局处理
       useLayout(async () => {});
-
+      // 右键事件
+      const optionsHandle = (targetList: MenuOptionsItemType[], allList: MenuOptionsItemType[], targetInstance: CreateComponentType) => {
+        // 多选处理
+        if (editStore.state.targetChart.selectId.length > 1) {
+          return allList.filter((i) => [MenuEnum.GROUP, MenuEnum.DELETE].includes(i.key as MenuEnum));
+        }
+        const statusMenuEnums: MenuEnum[] = [];
+        if (targetInstance.status.lock) {
+          statusMenuEnums.push(MenuEnum.LOCK);
+        } else {
+          statusMenuEnums.push(MenuEnum.UNLOCK);
+        }
+        if (targetInstance.status.hide) {
+          statusMenuEnums.push(MenuEnum.HIDE);
+        } else {
+          statusMenuEnums.push(MenuEnum.SHOW);
+        }
+        return targetList.filter((i) => !statusMenuEnums.includes(i.key as MenuEnum));
+      };
       // 背景
       const rangeStyle = computed((): CSSProperties => {
         // 设置背景色和图片背景
@@ -52,19 +75,34 @@
                 <EditRange class="transition-all-400">
                   <div class={{ ...getFilterStyle(editStore.state.editCanvasConfig), ...rangeStyle.value }}>
                     {editStore.state.componentList.map((item, index) => (
-                      <EditShapeBox key={index} item={item} style={{ ...useComponentStyle(item.attr, index), ...getBlendModeStyle(item.styles) }}>
-                        {h(resolveComponent(item.chartConfig.chartKey), {
-                          class: ['edit-content-chart', animationsClass(item.styles.animations)],
-                          chartConfig: item,
-                          themeSetting: editStore.state.editCanvasConfig.chartThemeSetting,
-                          themeColor: themeColor.value,
-                          style: {
-                            ...useSizeStyle(item.attr),
-                            ...getFilterStyle(item.styles),
-                            ...getTransformStyle(item.styles),
-                          },
-                        })}
-                      </EditShapeBox>
+                      <>
+                        {item.isGroup ? (
+                          <EditGroup groupData={item as CreateComponentGroupType} groupIndex={index}></EditGroup>
+                        ) : (
+                          <EditShapeBox
+                            key={index}
+                            item={item}
+                            style={{ ...useComponentStyle(item.attr, index), ...getBlendModeStyle(item.styles) }}
+                            onClick={(e) => mouseClickHandle(e, item)}
+                            onMousedown={(e) => mousedownHandle(e, item)}
+                            onMouseenter={(e) => mouseenterHandle(e, item)}
+                            onMouseleave={(e) => mouseleaveHandle(e)}
+                            onContextmenu={(e) => handleContextMenu(e, item, optionsHandle)}
+                          >
+                            {h(resolveComponent(item.chartConfig.chartKey), {
+                              class: [animationsClass(item.styles.animations)],
+                              chartConfig: item,
+                              themeSetting: editStore.state.editCanvasConfig.chartThemeSetting,
+                              themeColor: themeColor.value,
+                              style: {
+                                ...useSizeStyle(item.attr),
+                                ...getFilterStyle(item.styles),
+                                ...getTransformStyle(item.styles),
+                              },
+                            })}
+                          </EditShapeBox>
+                        )}
+                      </>
                     ))}
                   </div>
                 </EditRange>

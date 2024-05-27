@@ -3,9 +3,7 @@
   import { CreateComponentGroupType, CreateComponentType } from '/@/packages/types';
   import { useEditStore } from '/@/store/modules/edit';
   import { usePointStyle, useSizeStyle } from '../../hooks/useStyle';
-  import { useMouseHandle, useMousePointHandle } from '../../hooks';
-  import { MenuOptionsItemType, useContextMenu } from '../../../ContextMenu/useContextMenu';
-  import { MenuEnum } from '/@/enums/editPageEnum';
+  import { useMousePointHandle } from '../../hooks';
   export default defineComponent({
     props: {
       item: {
@@ -17,34 +15,14 @@
         required: false,
       },
     },
-    setup(props, { slots }) {
+    emits: ['click', 'mousedown', 'mouseenter', 'mouseleave', 'contextmenu'],
+    setup(props, { slots, emit }) {
       // 锚点
       const pointList = ['t', 'r', 'b', 'l', 'lt', 'rt', 'lb', 'rb'];
       // 光标朝向
       const cursorResize = ['n', 'e', 's', 'w', 'nw', 'ne', 'sw', 'se'];
       const editStore = useEditStore();
-      const { handleContextMenu } = useContextMenu();
-      // 点击事件
-      const { mouseenterHandle, mouseleaveHandle, mousedownHandle, mouseClickHandle } = useMouseHandle();
-      // 右键事件
-      const optionsHandle = (targetList: MenuOptionsItemType[], allList: MenuOptionsItemType[], targetInstance: CreateComponentType) => {
-        // 多选处理
-        if (editStore.state.targetChart.selectId.length > 1) {
-          return allList.filter((i) => [MenuEnum.GROUP, MenuEnum.DELETE].includes(i.key as MenuEnum));
-        }
-        const statusMenuEnums: MenuEnum[] = [];
-        if (targetInstance.status.lock) {
-          statusMenuEnums.push(MenuEnum.LOCK);
-        } else {
-          statusMenuEnums.push(MenuEnum.UNLOCK);
-        }
-        if (targetInstance.status.hide) {
-          statusMenuEnums.push(MenuEnum.HIDE);
-        } else {
-          statusMenuEnums.push(MenuEnum.SHOW);
-        }
-        return targetList.filter((i) => !statusMenuEnums.includes(i.key as MenuEnum));
-      };
+
       // 兼容多值场景
       const select = computed(() => {
         const id = props.item.id;
@@ -61,11 +39,11 @@
       return () => (
         <div
           class={['shape-box', { lock: props.item.status.lock, hide: props.item.status.hide }]}
-          onClick={(e) => mouseClickHandle(e, props.item)}
-          onMousedown={(e) => mousedownHandle(e, props.item)}
-          onMouseenter={(e) => mouseenterHandle(e, props.item)}
-          onMouseleave={(e) => mouseleaveHandle(e)}
-          onContextmenu={(e) => handleContextMenu(e, props.item, optionsHandle)}
+          onClick={(e) => emit('click', e)}
+          onMousedown={(e) => emit('mousedown', e)}
+          onMouseenter={(e) => emit('mouseenter', e)}
+          onMouseleave={(e) => emit('mouseleave', e)}
+          onContextmenu={(e) => emit('contextmenu', e)}
         >
           {slots?.default?.()}
           {!props.hiddenPoint ? (

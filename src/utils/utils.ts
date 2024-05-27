@@ -106,6 +106,28 @@ export const JSONParse = (data: string) => {
 };
 
 /**
+ * * JSON序列化，支持函数和 undefined
+ * @param data
+ */
+export const JSONStringify = <T>(data: T) => {
+  return JSON.stringify(
+    data,
+    (_, val) => {
+      // 处理函数丢失问题
+      if (typeof val === 'function') {
+        return `${val}`;
+      }
+      // 处理 undefined 丢失问题
+      if (typeof val === 'undefined') {
+        return null;
+      }
+      return val;
+    },
+    2,
+  );
+};
+
+/**
  * * file转url
  */
 export const fileToUrl = (file: File): string => {

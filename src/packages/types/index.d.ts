@@ -127,6 +127,11 @@ interface requestConfig {
   request: RequestConfigType;
 }
 
+// 组件成组实例类
+export interface CreateComponentGroupType extends CreateComponentType {
+  groupList: Array<CreateComponentType>;
+}
+
 export interface CreateComponentType extends PublicConfigType, requestConfig {
   key: string;
   chartConfig: ConfigType;
