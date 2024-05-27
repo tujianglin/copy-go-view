@@ -9,6 +9,7 @@
   import { h } from 'vue';
   const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'));
   const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'));
+  const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'));
 
   export default defineComponent({
     setup() {
@@ -69,36 +70,32 @@
         },
       ];
 
-      // const chartsDefaultTabList = [
-      //   {
-      //     key: TabsEnum.CHART_SETTING,
-      //     title: '定制',
-      //     icon: ConstructIcon,
-      //     render: ChartSetting,
-      //   },
-      //   {
-      //     key: TabsEnum.CHART_ANIMATION,
-      //     title: '动画',
-      //     icon: LeafIcon,
-      //     render: ChartAnimation,
-      //   },
-      // ];
+      const chartsDefaultTabList = [
+        {
+          key: TabsEnum.CHART_SETTING,
+          title: '定制',
+          render: ChartSetting,
+        },
+        {
+          key: TabsEnum.CHART_ANIMATION,
+          title: '动画',
+          render: '',
+        },
+      ];
 
-      // const chartsTabList = [
-      //   ...chartsDefaultTabList,
-      //   {
-      //     key: TabsEnum.CHART_DATA,
-      //     title: '数据',
-      //     icon: FlashIcon,
-      //     render: ChartData,
-      //   },
-      //   {
-      //     key: TabsEnum.CHART_EVENT,
-      //     title: '事件',
-      //     icon: RocketIcon,
-      //     render: ChartEvent,
-      //   },
-      // ];
+      const chartsTabList = [
+        ...chartsDefaultTabList,
+        {
+          key: TabsEnum.CHART_DATA,
+          title: '数据',
+          render: '',
+        },
+        {
+          key: TabsEnum.CHART_EVENT,
+          title: '事件',
+          render: '',
+        },
+      ];
       return () => (
         <Layout.Sider class="charts-sider h-full overflow-y-auto !bg-elevated" collapsedWidth={0} width={350} v-model:collapsed={layoutStore.state.details}>
           {!selectTarget.value ? (
@@ -110,7 +107,13 @@
               ))}
             </Tabs>
           ) : (
-            ''
+            <Tabs class="h-full" centered>
+              {(selectTarget.value?.isGroup ? chartsDefaultTabList : chartsTabList).map((i) => (
+                <Tabs.TabPane key={i.key} tab={i.title}>
+                  {i.render ? h(i.render) : '111'}
+                </Tabs.TabPane>
+              ))}
+            </Tabs>
           )}
         </Layout.Sider>
       );

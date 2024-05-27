@@ -2,7 +2,7 @@
   import { PropType, defineComponent, toRefs } from 'vue';
   import { PickCreateComponentType } from '/@/packages/types';
   import { Collapse } from '/@/components';
-  import { Divider, Form, Slider } from 'ant-design-vue';
+  import { Divider, Form, Slider, Tag } from 'ant-design-vue';
   export default defineComponent({
     props: {
       isGroup: {
@@ -22,7 +22,10 @@
       const { chartStyles } = toRefs(props);
       return () => (
         <>
-          <Divider v-show={props.isGroup}></Divider>
+          <div v-show={props.isGroup}>
+            <Divider></Divider>
+            <Tag color="warning">解散分组「 {props.isCanvas ? '滤镜' : '滤镜 / 变换'} 」也将消失!</Tag>
+          </div>
           <Collapse label={props.isCanvas ? '滤镜' : '滤镜 / 变换'} toggle v-model={chartStyles.value.filterShow}>
             <Form colon={false} labelCol={{ span: 3 }} labelAlign="left">
               <Form.Item label="色相">
