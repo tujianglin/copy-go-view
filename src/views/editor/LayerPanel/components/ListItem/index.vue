@@ -46,7 +46,7 @@
       }
       return () => (
         <div
-          class="group mb-1 relative w-[90%] cursor-pointer "
+          class={['group mb-1 relative cursor-pointer', { 'w-[90%]': !props.isGroup }]}
           onMousedown={(e) => emit('mousedown', e)}
           onMouseenter={onMouseenter}
           onMouseleave={onMouseleave}

@@ -3,12 +3,10 @@
   import { CreateComponentGroupType, CreateComponentType } from '/@/packages/types';
   import { LayerModeEnum } from '/@/store/types';
   import { MenuEnum, MouseEventButton } from '/@/enums/editPageEnum';
-  // import { useAppStore } from '/@/store/modules/app';
   import { useEditStore } from '/@/store/modules/edit';
   import { MenuOptionsItemType, divider, useContextMenu } from '../../../ContextMenu/useContextMenu';
   import Status from '../Status/index.vue';
   import ListItem from '../ListItem/index.vue';
-  import { Collapse } from 'ant-design-vue';
 
   export default defineComponent({
     props: {
@@ -114,9 +112,9 @@
         editStore.state.targetChart.hoverId = undefined;
       };
       return () => (
-        <div>
+        <div class="w-90%">
           <div
-            class="group mb-1 relative w-[90%] cursor-pointer"
+            class="group mb-1 relative cursor-pointer"
             onClick={clickHandle}
             onMousedown={onMousedown}
             onMouseenter={() => onMouseenter(props.componentGroupData)}
@@ -128,12 +126,10 @@
               <Status isGroup={false} hover={hover.value} status={status.value}></Status>
             </div>
           </div>
-          <div>
-            <Collapse>
-              {props.componentGroupData.groupList.map((element) => (
-                <ListItem key={element.id} componentData={element} isGroup onContextmenu={(e) => handleContextMenu(e, props.componentGroupData, optionsHandle)}></ListItem>
-              ))}
-            </Collapse>
+          <div v-show={expend.value}>
+            {props.componentGroupData.groupList.map((element) => (
+              <ListItem key={element.id} componentData={element} isGroup onContextmenu={(e) => handleContextMenu(e, props.componentGroupData, optionsHandle)}></ListItem>
+            ))}
           </div>
         </div>
       );

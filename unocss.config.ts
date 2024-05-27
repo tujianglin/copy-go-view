@@ -32,7 +32,7 @@ export default defineConfig({
     ['flex-end', 'flex items-end justify-between'],
     ['bd-layout', ' b-layout b-solid b-1'],
     ['bd-primary', ' b-primary b-solid b-1'],
-    ['b-transparent', 'b-transparent b-1 b-solid'],
+    ['bd-transparent', 'b-transparent b-1 b-solid'],
     ['text-ellipsis', 'text-ellipsis overflow-hidden whitespace-nowrap'],
     ['wh-full', 'w-full h-full'],
   ],
